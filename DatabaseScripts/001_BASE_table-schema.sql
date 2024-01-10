@@ -15,7 +15,7 @@ GO
 
 CREATE TABLE [Users].[Role] (
   [Id] int PRIMARY KEY IDENTITY(1,1),
-  [Name] nvarchar NOT NULL,
+  [Name] nvarchar(255) NOT NULL,
   [DateCreated] datetime NOT NULL
 )
 GO
@@ -23,14 +23,14 @@ GO
 CREATE TABLE [Users].[User] (
   [Id] int PRIMARY KEY IDENTITY(1,1),
   [RoleId] int NOT NULL,
-  [UserName] nvarchar NOT NULL,
-  [Password] nvarchar NOT NULL,
-  [Name] nvarchar NOT NULL,
-  [Surname] nvarchar NOT NULL,
-  [AddressLine1] nvarchar,
-  [AddressLine2] nvarchar,
-  [PhoneNumber] nvarchar,
-  [EmailAddress] nvarchar NOT NULL,
+  [UserName] nvarchar(255) NOT NULL,
+  [Password] nvarchar(255) NOT NULL,
+  [Name] nvarchar(255) NOT NULL,
+  [Surname] nvarchar(255) NOT NULL,
+  [AddressLine1] nvarchar(255),
+  [AddressLine2] nvarchar(255),
+  [PhoneNumber] nvarchar(255),
+  [EmailAddress] nvarchar(255) NOT NULL,
   [IsActive] bit NOT NULL,
   [DateCreated] datetime NOT NULL
 )
@@ -38,7 +38,7 @@ GO
 
 CREATE TABLE [Rooms].[RoomType] (
   [Id] int PRIMARY KEY IDENTITY(1,1),
-  [Name] nvarchar NOT NULL,
+  [Name] nvarchar(255) NOT NULL,
   [NumberOfPeople] int NOT NULL,
   [DateCreated] datetime NOT NULL
 )
@@ -46,7 +46,7 @@ GO
 
 CREATE TABLE [Rooms].[RoomStatus] (
   [Id] int PRIMARY KEY IDENTITY(1,1),
-  [Name] nvarchar NOT NULL,
+  [Name] nvarchar(255) NOT NULL,
   [DateCreated] datetime NOT NULL
 )
 GO
@@ -79,7 +79,7 @@ GO
 
 CREATE TABLE [Business].[ReservationStatus] (
   [Id] int PRIMARY KEY IDENTITY(1,1),
-  [Name] nvarchar NOT NULL,
+  [Name] nvarchar(255) NOT NULL,
   [DateCreated] datetime NOT NULL
 )
 GO
@@ -100,14 +100,14 @@ CREATE TABLE [Business].[Review] (
   [Id] int PRIMARY KEY IDENTITY(1,1),
   [ReservationId] int NOT NULL,
   [Rating] int NOT NULL,
-  [Comment] nvarchar NOT NULL,
+  [Comment] nvarchar(255) NOT NULL,
   [DateCreated] datetime NOT NULL
 )
 GO
 
 CREATE TABLE [Base].[Hotel] (
   [Id] int PRIMARY KEY IDENTITY(1,1),
-  [Name] nvarchar NOT NULL,
+  [Name] nvarchar(255) NOT NULL,
   [CheckInTime] time NOT NULL,
   [CheckOutTime] time NOT NULL,
   [DateCreated] datetime NOT NULL
@@ -125,7 +125,7 @@ GO
 
 CREATE TABLE [Visuals].[ObjectType] (
   [Id] int PRIMARY KEY IDENTITY(1,1),
-  [Type] nvarchar NOT NULL,
+  [Type] nvarchar(255) NOT NULL,
   [DateCreated] datetime NOT NULL
 )
 GO
@@ -134,8 +134,8 @@ CREATE TABLE [Visuals].[ObjectPlacement] (
   [Id] int PRIMARY KEY IDENTITY(1,1),
   [ObjectTypeId] int NOT NULL,
   [FloorNumberId] int NOT NULL,
-  [PositionFrom] nvarchar NOT NULL,
-  [PositionTo] nvarchar NOT NULL,
+  [PositionFrom] nvarchar(255) NOT NULL,
+  [PositionTo] nvarchar(255) NOT NULL,
   [RoomId] int,
   [DateCreated] datetime NOT NULL
 )
@@ -185,3 +185,9 @@ GO
 
 ALTER TABLE [Visuals].[ObjectPlacement] ADD FOREIGN KEY ([RoomId]) REFERENCES [Rooms].[Room] ([Id])
 GO
+
+insert into Users.Role (Name, DateCreated)
+values ('Admin', GETDATE()),
+('Employee', GETDATE()),
+('User', GETDATE()),
+('Guest', GETDATE())
