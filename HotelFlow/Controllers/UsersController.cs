@@ -1,4 +1,5 @@
-﻿using HotelFlow.Models.DTO;
+﻿using HotelFlow.Helpers;
+using HotelFlow.Models.DTO;
 using HotelFlow.Services.DBServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,7 @@ using static HotelFlow.Helpers.Constants;
 namespace HotelFlow.Controllers
 {
     [ApiController]
-    [Route("[controller]")] // tj hotelflow.pl/users
+    [Route("[controller]")]
     public class UsersController : ControllerBase
     {
         private UserService _userService { get; set; }
@@ -19,84 +20,141 @@ namespace HotelFlow.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Route("[action]")] // tj hotelflow.pl/users/all
+        [Route("[action]")]
         public IActionResult All()
         {
-            return null; // tu bedzie logika pobierania wszystkich userow
+            return Ok(_userService.GetAllUsers());
         }
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        [Route("[action]/{offset}")] // tj hotelflow.pl/users/all
+        [Route("[action]/{offset}")]
         public IActionResult GetWithOffset(int offset)
         {
-            return null; // tu bedzie logika pobierania wszystkich userow z offsetem (tj pobieramy np co 10)
+            if (offset < 0)
+            {
+                return BadRequest(OffsetWrongExceptionMessage);
+            }
+
+            return Ok(_userService.GetTopNUsersWithOffset(offset));
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Route("{id}")] // tj. np. hotelflow.pl/users/6
+        [Route("{id}")]
         public IActionResult GetUserById(int id)
         {
-            return null; // tu bedzie logika pobierania usera przez id
+            if (id < 1)
+            {
+                return BadRequest(string.Format(UserNotFoundExceptionMessage, $"id: {id}"));
+            }
+
+            var user = _userService.GetUserById(id);
+
+            if (user == null)
+            {
+                return BadRequest(string.Format(UserNotFoundExceptionMessage, $"id: {id}"));
+            }
+
+            return Ok(user);
         }
 
         [HttpGet]
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Route("[action]")] // tj. np. hotelflow.pl/users/employees
-        public IActionResult Employees()
+        [Route("[action]")]
+        public IActionResult GetByRole(int roleId)
         {
-            return null; // tu bedzie logika pobierania pracownikow
+            if (roleId < 1 || roleId > 4)
+            {
+                return BadRequest(RoleWrongExceptionMessage);
+            }
+
+            return Ok(
+                new 
+                {
+                    role = ((Roles)roleId).GetDescription(), 
+                    users = _userService.GetUsersByFilter(u => u.RoleId == roleId)
+                }
+            );
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Route("[action]")] // tj. np. hotelflow.pl/users/edit
+        [Route("[action]")]
         public IActionResult Edit(User user)
         {
-            return null; // tu bedzie logika edycji
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(_userService.UpdateUser(user));
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Route("[action]")] // tj. np. hotelflow.pl/users/edit
-        public IActionResult MultiEdit(List<User> user)
+        [Route("[action]")]
+        public IActionResult MultiEdit(List<User> users)
         {
-            return null; // tu bedzie logika edycji wielu
+            if (!users.Any())
+            {
+                return BadRequest();
+            }
+
+            _userService.UpdateUsers(users);
+            return Ok();
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Route("[action]")] // tj. np. hotelflow.pl/users/delete
+        [Route("[action]")]
         public IActionResult Delete(User user)
         {
-            return null; // tu bedzie logika usuwania
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
+            _userService.DeleteUser(user.Id);
+            return Ok();
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Route("[action]")] // tj. np. hotelflow.pl/users/delete
+        [Route("[action]")]
         public IActionResult MultiDelete(List<User> user)
         {
-            return null; // tu bedzie logika usuwania wielu
+            return null;
         }
 
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Route("[action]/{id}")] // tj. np. hotelflow.pl/users/delete/6
+        [Route("[action]/{id}")]
         public IActionResult Delete(int id)
         {
-            return null; // tu bedzie logika usuwania po id
+            if (id < 1)
+            {
+                return BadRequest();
+            }
+
+            _userService.DeleteUser(id);
+            return Ok();
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Route("[action]")] // tj. np. hotelflow.pl/users/delete
+        [Route("[action]")]
         public IActionResult MultiDeleteByIds(List<int> ids)
         {
-            return null; // tu bedzie logika usuwania wielu po id
+            if (!ids.Any())
+            {
+                return BadRequest();
+            }
+
+            _userService.DeleteUsers(ids);
+            return Ok();
         }
     }
 }
