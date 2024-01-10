@@ -18,12 +18,20 @@ namespace HotelFlow.Controllers
             _userService = userService;
         }
 
-        [HttpPost]
+        [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
         public IActionResult All()
         {
             return Ok(_userService.GetAllUsers());
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("[action]")]
+        public IActionResult AllWithInactive()
+        {
+            return Ok(_userService.GetAllUsers(true));
         }
 
         [HttpGet]
@@ -39,7 +47,7 @@ namespace HotelFlow.Controllers
             return Ok(_userService.GetTopNUsersWithOffset(offset));
         }
 
-        [HttpPost]
+        [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("{id}")]
         public IActionResult GetUserById(int id)
@@ -60,7 +68,6 @@ namespace HotelFlow.Controllers
         }
 
         [HttpGet]
-        [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
         public IActionResult GetByRole(int roleId)
@@ -79,7 +86,7 @@ namespace HotelFlow.Controllers
             );
         }
 
-        [HttpPost]
+        [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
         public IActionResult Edit(User user)
@@ -92,12 +99,12 @@ namespace HotelFlow.Controllers
             return Ok(_userService.UpdateUser(user));
         }
 
-        [HttpPost]
+        [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
-        public IActionResult MultiEdit(List<User> users)
+        public IActionResult EditMultiple(List<User> users)
         {
-            if (!users.Any())
+            if (users == null || !users.Any())
             {
                 return BadRequest();
             }
@@ -106,7 +113,7 @@ namespace HotelFlow.Controllers
             return Ok();
         }
 
-        [HttpPost]
+        [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
         public IActionResult Delete(User user)
@@ -120,16 +127,7 @@ namespace HotelFlow.Controllers
             return Ok();
         }
 
-        [HttpPost]
-        [Authorize(Roles = "Admin")]
-        [Route("[action]")]
-        public IActionResult MultiDelete(List<User> user)
-        {
-            return null;
-        }
-
-
-        [HttpPost]
+        [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("[action]/{id}")]
         public IActionResult Delete(int id)
@@ -143,12 +141,12 @@ namespace HotelFlow.Controllers
             return Ok();
         }
 
-        [HttpPost]
+        [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
-        public IActionResult MultiDeleteByIds(List<int> ids)
+        public IActionResult DeleteMultipleByIds(List<int> ids)
         {
-            if (!ids.Any())
+            if (ids == null || !ids.Any())
             {
                 return BadRequest();
             }
