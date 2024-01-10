@@ -27,8 +27,8 @@ namespace HotelFlow.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        [Route("[action]")] // tj hotelflow.pl/users/all
-        public IActionResult All(int offset)
+        [Route("[action]/{offset}")] // tj hotelflow.pl/users/all
+        public IActionResult GetWithOffset(int offset)
         {
             return null; // tu bedzie logika pobierania wszystkich userow z offsetem (tj pobieramy np co 10)
         }
@@ -61,7 +61,7 @@ namespace HotelFlow.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]")] // tj. np. hotelflow.pl/users/edit
-        public IActionResult Edit(List<User> user)
+        public IActionResult MultiEdit(List<User> user)
         {
             return null; // tu bedzie logika edycji wielu
         }
@@ -77,7 +77,7 @@ namespace HotelFlow.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]")] // tj. np. hotelflow.pl/users/delete
-        public IActionResult Delete(List<User> user)
+        public IActionResult MultiDelete(List<User> user)
         {
             return null; // tu bedzie logika usuwania wielu
         }
@@ -94,7 +94,7 @@ namespace HotelFlow.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]")] // tj. np. hotelflow.pl/users/delete
-        public IActionResult Delete(List<int> ids)
+        public IActionResult MultiDeleteByIds(List<int> ids)
         {
             return null; // tu bedzie logika usuwania wielu po id
         }
