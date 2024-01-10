@@ -191,3 +191,23 @@ values ('Admin', GETDATE()),
 ('Employee', GETDATE()),
 ('User', GETDATE()),
 ('Guest', GETDATE())
+
+insert into Business.ReservationStatus (Name, DateCreated)
+values ('To Confirm', GETDATE()),
+('Confirmed', GETDATE()),
+('Checked In', GETDATE()),
+('Checked Out', GETDATE()),
+('Closed', GETDATE())
+
+insert into Rooms.RoomStatus (Name, DateCreated)
+values ('Clean', GETDATE()),
+('To Clean', GETDATE()),
+('Taken', GETDATE())
+
+insert into Rooms.RoomType (Name, NumberOfPeople, DateCreated)
+values ('Family', 4, GETDATE()),
+('Family MAX', 6, GETDATE()),
+('Double', 2, GETDATE()),
+('Double PREMIUM', 2, GETDATE()),
+('Single', 1, GETDATE()),
+('Triple', 3, GETDATE())
