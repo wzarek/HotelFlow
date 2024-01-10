@@ -9,7 +9,7 @@ using static HotelFlow.Helpers.Constants;
 namespace HotelFlow.Controllers
 {
     [ApiController]
-    [Route("[controller]")] // tj hotelflow.pl/rooms
+    [Route("[controller]")]
     public class RoomsController : ControllerBase
     {
         private RoomService _roomService { get; set; }
@@ -20,44 +20,188 @@ namespace HotelFlow.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")] // + PRACOWNIK
+        [Authorize(Roles = "Admin,Employee")]
         [Route("[action]")]
-        public IActionResult RoomsList()
+        public IActionResult All()
         {
-            return null;
+            return Ok(_roomService.GetAllRooms());
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")] // + PRACOWNIK
+        [Authorize(Roles = "Admin,Employee")]
         [Route("[action]")]
-        public IActionResult RoomInfo(int id)
+        public IActionResult AllWithInactive()
         {
-            return null;
+            return Ok(_roomService.GetAllRooms(true));
         }
 
-        [HttpPost]
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("[action]/{offset}")]
+        public IActionResult GetWithOffset(int offset)
+        {
+            if (offset < 0)
+            {
+                return BadRequest(OffsetWrongExceptionMessage);
+            }
+
+            return Ok(_roomService.GetTopNRoomsWithOffset(offset));
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin,Employee")]
+        [Route("{id}")]
+        public IActionResult GetRoomById(int id)
+        {
+            if (id < 1)
+            {
+                return BadRequest();
+            }
+
+            var room = _roomService.GetRoomById(id);
+
+            if (room == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(room);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin,Employee")]
+        [Route("[action]")]
+        public IActionResult GetByStatus(int statusId, bool getInactive)
+        {
+            if (statusId < 1)
+            {
+                return BadRequest();
+            }
+
+            var rooms = _roomService.GetRoomsByFilter(r => (getInactive && r.IsActive) && r.StatusId == statusId);
+
+            if (rooms.Any())
+            {
+                return BadRequest();
+            }
+
+            return Ok(rooms);
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetByType(int typeId)
+        {
+            if (typeId < 1)
+            {
+                return BadRequest();
+            }
+
+            var rooms = _roomService.GetRoomsByFilter(r => r.IsActive && r.TypeId == typeId);
+
+            if (rooms.Any())
+            {
+                return BadRequest();
+            }
+
+            return Ok(rooms);
+        }
+
+        [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
-        public IActionResult EditRoom(Room room)
+        public IActionResult Edit(Room room)
         {
-            return null;
+            if (room == null)
+            {
+                return BadRequest();
+            }
+
+            
+            return Ok(_roomService.UpdateRoom(room));
         }
 
-        [HttpPost]
+        [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
-        public IActionResult DeleteRoom(Room room)
+        public IActionResult EditMultiple(IEnumerable<Room> rooms)
         {
-            return null; // usuwanie pokoju
+            if (rooms == null || !rooms.Any())
+            {
+                return BadRequest();
+            }
+
+            _roomService.UpdateRooms(rooms);
+            return Ok();
         }
 
-        [HttpPost]
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("[action]")]
+        public IActionResult Delete(Room room)
+        {
+            if (room == null)
+            {
+                return BadRequest();
+            }
+
+            _roomService.DeleteRoom(room.Id);
+            return Ok();
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("[action]/{id}")]
+        public IActionResult Delete(int id)
+        {
+            if (id < 1)
+            {
+                return BadRequest();
+            }
+
+            _roomService.DeleteRoom(id);
+            return Ok();
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("[action]")]
+        public IActionResult DeleteMultipleByIds(IEnumerable<int> ids)
+        {
+            if (ids == null || !ids.Any())
+            {
+                return BadRequest();
+            }
+
+            _roomService.DeleteRooms(ids);
+            return Ok();
+        }
+
+        [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
         public IActionResult AddRoom(Room room)
         {
-            return null; // dodawanie pokoju
+            if (room == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(_roomService.CreateRoom(room));
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("[action]")]
+        public IActionResult AddRooms(IEnumerable<Room> rooms)
+        {
+            if (rooms == null || !rooms.Any())
+            {
+                return BadRequest();
+            }
+
+            _roomService.CreateRooms(rooms);
+            return Ok();
+        }
     }
 }
