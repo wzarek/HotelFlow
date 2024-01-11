@@ -105,18 +105,18 @@ namespace HotelFlow.Controllers
             return Ok(rooms);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Route("[action]")]
-        public IActionResult Edit(Room room)
+        [Route("[action]/{roomId}")]
+        public IActionResult Edit(int roomId, RoomDto room_dto)
         {
-            if (room == null)
+            if (roomId < 1 || room_dto == null)
             {
                 return BadRequest();
             }
 
-            
-            return Ok(_roomService.UpdateRoom(room));
+
+            return Ok(_roomService.UpdateRoom(roomId, room_dto));
         }
 
         [HttpGet]

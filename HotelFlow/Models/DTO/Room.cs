@@ -3,6 +3,15 @@ using System.Collections.Generic;
 
 namespace HotelFlow.Models.DTO
 {
+    public class RoomDto
+    {
+        public int Number { get; set; }
+        public int TypeId { get; set; }
+        public int StatusId { get; set; }
+        public bool IsActive { get; set; }
+        public virtual RoomStatus Status { get; set; } = null!;
+        public virtual RoomType Type { get; set; } = null!;
+    }
     public partial class Room
     {
         public Room()

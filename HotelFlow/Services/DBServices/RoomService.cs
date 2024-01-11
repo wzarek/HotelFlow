@@ -62,9 +62,19 @@ namespace HotelFlow.Services.DBServices
             return _context.Rooms.Where(filter).ToList();
         }
 
-        public Room UpdateRoom(Room room)
+        public Room UpdateRoom(int roomId, RoomDto room_dto)
         {
-            _context.Rooms.Update(room);
+            var room = _context.Rooms.Find(roomId);
+            if (room == null)
+            {
+                return null;
+            }
+            room.Number = room_dto.Number;
+            room.TypeId = room_dto.TypeId;
+            room.StatusId = room_dto.StatusId;
+            room.IsActive = room_dto.IsActive;
+            room.Status = room_dto.Status;
+            room.Type = room_dto.Type;
             _context.SaveChanges();
             return room;
         }
