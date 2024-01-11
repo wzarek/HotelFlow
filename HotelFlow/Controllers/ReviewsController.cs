@@ -61,7 +61,7 @@ namespace HotelFlow.Controllers
         [HttpPost]
         [Authorize(Roles = "User")]
         [Route("[action]")]
-        public IActionResult AddReview(Review review)
+        public IActionResult Add(Review review)
         {
             if (review == null)
             {
@@ -74,7 +74,7 @@ namespace HotelFlow.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
-        public IActionResult DeleteReview(Review review)
+        public IActionResult Delete(Review review)
         {
             if (review == null)
             {

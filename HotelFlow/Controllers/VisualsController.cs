@@ -4,61 +4,127 @@ using HotelFlow.Services;
 using HotelFlow.Services.DBServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Drawing;
 using static HotelFlow.Helpers.Constants;
 
 namespace HotelFlow.Controllers
 {
     [ApiController]
-    [Route("[controller]")] // tj hotelflow.pl/visuals
+    [Route("[controller]")]
     public class VisualsController : ControllerBase
     {
         private FloorSchemaService _floorSchemaService { get; set; }
+        private ObjectPlacementService _objectPlacementService { get; set; }
+        private ObjectTypeService _objectTypeService { get; set; }
 
-        public VisualsController(FloorSchemaService floorSchemaService)
+        public VisualsController(FloorSchemaService floorSchemaService, ObjectPlacementService objectPlacementService, ObjectTypeService objectTypeService)
         {
             _floorSchemaService = floorSchemaService;
+            _objectPlacementService = objectPlacementService;
+            _objectTypeService = objectTypeService;
         }
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        [Route("[action]/{floor}")]
-        public IActionResult ShowFloor(int floor)
+        [Route("[action]")]
+        public IActionResult All()
         {
-            return null; // pobiera info o pietrze
+            return Ok(_floorSchemaService.GetAllFloorSchemas());
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("[action]/{id}")]
+        public IActionResult GetFloorById(int id)
+        {
+            if (id < 0)
+            {
+                return NotFound();
+            }
+
+            var floorSchema = _floorSchemaService.GetFloorSchemaById(id);
+
+            if (floorSchema == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(floorSchema);
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
-        public IActionResult EditFloor(FloorSchema floor)
+        public IActionResult EditFloor(FloorSchema floorSchema)
         {
-            return null; // zmienia wymiary pietra
+            if (floorSchema == null)
+            {
+                return BadRequest();
+            }
+
+            _floorSchemaService.UpdateFloorSchema(floorSchema);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("[action]/{id}")]
+        public IActionResult DeleteFloorSchema(int id)
+        {
+            if (id < 1)
+            {
+                return BadRequest();
+            }
+
+            _floorSchemaService.DeleteFloorSchema(id);
+
+            return Ok();
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
-        public IActionResult EditObjectPlacement(ObjectPlacement _object)
+        public IActionResult EditObjectPlacement(ObjectPlacement objectPlacement)
         {
-            return null; // zmienia parametry obiektu na siatce
+            if (objectPlacement == null)
+            {
+                return BadRequest();
+            }
+
+            _objectPlacementService.UpdateObjectPlacement(objectPlacement);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("[action]/{id}")]
+        public IActionResult DeleteObjectPlacement(int id)
+        {
+            if (id < 1)
+            {
+                return BadRequest();
+            }
+
+            _objectPlacementService.DeleteObjectPlacement(id);
+
+            return Ok();
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
-        public IActionResult DeleteObject(ObjectPlacement _object)
+        public IActionResult AddObjectPlacement(ObjectPlacement objectPlacement)
         {
-            return null; // usuwanie obiektu
+            if (objectPlacement == null)
+            {
+                return BadRequest();
+            }
+
+            _objectPlacementService.CreateObjectPlacement(objectPlacement);
+
+            return Ok();
         }
-
-        [HttpPost]
-        [Authorize(Roles = "Admin")]
-        [Route("[action]")]
-        public IActionResult AddObject(ObjectPlacement _object)
-        {
-            return null; // dodawanie obiektu
-        }
-
-
     }
 }
