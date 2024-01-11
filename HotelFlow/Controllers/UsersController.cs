@@ -89,14 +89,14 @@ namespace HotelFlow.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]/{id}")]
-        public IActionResult Edit(int id, UserDataDto user_dto)
+        public IActionResult Edit(int id, UserDataDto userDto)
         {
-            if (id < 1 || user_dto == null)
+            if (id < 1 || userDto == null)
             {
                 return BadRequest();
             }
 
-            return Ok(_userService.UpdateUser(id, user_dto));
+            return Ok(_userService.UpdateUser(id, userDto));
         }
 
         [HttpGet]
