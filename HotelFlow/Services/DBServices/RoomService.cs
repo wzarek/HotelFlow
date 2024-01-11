@@ -26,8 +26,17 @@ namespace HotelFlow.Services.DBServices
             };
         }
 
-        public Room CreateRoom(Room room)
+        public Room CreateRoom(RoomDto roomDto)
         {
+            var room = new Room
+            {
+                Number = roomDto.Number,
+                TypeId = roomDto.TypeId,
+                StatusId = roomDto.StatusId,
+                IsActive = roomDto.IsActive,
+                DateCreated = DateTime.Now
+            };
+
             _context.Rooms.AddIfNotExists(room, r => r.Number == room.Number);
             _context.SaveChanges();
             return room;
@@ -73,8 +82,6 @@ namespace HotelFlow.Services.DBServices
             room.TypeId = room_dto.TypeId;
             room.StatusId = room_dto.StatusId;
             room.IsActive = room_dto.IsActive;
-            room.Status = room_dto.Status;
-            room.Type = room_dto.Type;
             _context.SaveChanges();
             return room;
         }

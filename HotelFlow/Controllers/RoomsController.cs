@@ -115,7 +115,6 @@ namespace HotelFlow.Controllers
                 return BadRequest();
             }
 
-
             return Ok(_roomService.UpdateRoom(roomId, room_dto));
         }
 
