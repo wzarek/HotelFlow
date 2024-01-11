@@ -9,7 +9,7 @@ using static HotelFlow.Helpers.Constants;
 namespace HotelFlow.Controllers
 {
     [ApiController]
-    [Route("[controller]")] // tj hotelflow.pl/users
+    [Route("[controller]")]
     public class ReviewsController : ControllerBase
     {
         private ReviewService _reviewService { get; set; }
@@ -20,27 +20,70 @@ namespace HotelFlow.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
         [Route("[action]")]
-        public IActionResult OpenReview(int id)
+        public IActionResult All()
         {
-            return null; // pobiera info o opinii
+            return Ok(_reviewService.GetAllReviews());
+        }
+
+        [HttpGet]
+        [Route("[action]/{offset}")]
+        public IActionResult GetWithOffset(int offset)
+        {
+            if (offset < 0)
+            {
+                return BadRequest(OffsetWrongExceptionMessage);
+            }
+
+            return Ok(_reviewService.GetTopNReviewsWithOffset(offset));
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin,Employee")]
+        [Route("[action]/{reservationId}")]
+        public IActionResult GetReviewForReservation(int reservationId)
+        {
+            if (reservationId < 1)
+            {
+                return BadRequest();
+            }
+
+            var review = _reviewService.GetReviewsByFilter(r => r.ReservationId == reservationId).FirstOrDefault();
+
+            if (review == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(review); 
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "User")]
+        [Route("[action]")]
+        public IActionResult AddReview(Review review)
+        {
+            if (review == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(_reviewService.CreateReview(review)); 
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
-        public IActionResult PostReview(Review review)
+        public IActionResult DeleteReview(Review review)
         {
-            return null; // dodaje opinie
-        }
+            if (review == null)
+            {
+                return BadRequest();
+            }
 
-        [HttpPost]
-        [Authorize(Roles = "Admin")]
-        [Route("[action]")]
-        public IActionResult ReleteReview(Review review)
-        {
-            return null; // usuwa opinie
+            _reviewService.DeleteReview(review.Id);
+
+            return Ok();
         }
     }
 }
