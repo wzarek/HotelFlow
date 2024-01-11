@@ -27,7 +27,7 @@ namespace HotelFlow.Controllers
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
-        public IActionResult All()
+        public IActionResult AllFloors()
         {
             return Ok(_floorSchemaService.GetAllFloorSchemas());
         }
@@ -55,6 +55,21 @@ namespace HotelFlow.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
+        public IActionResult AddFloor(FloorSchema floorSchema)
+        {
+            if (floorSchema == null)
+            {
+                return BadRequest();
+            }
+
+            _floorSchemaService.UpdateFloorSchema(floorSchema);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("[action]")]
         public IActionResult EditFloor(FloorSchema floorSchema)
         {
             if (floorSchema == null)
@@ -70,7 +85,7 @@ namespace HotelFlow.Controllers
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("[action]/{id}")]
-        public IActionResult DeleteFloorSchema(int id)
+        public IActionResult DeleteFloor(int id)
         {
             if (id < 1)
             {
