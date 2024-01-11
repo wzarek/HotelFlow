@@ -71,17 +71,17 @@ namespace HotelFlow.Services.DBServices
             return _context.Rooms.Where(filter).ToList();
         }
 
-        public Room UpdateRoom(int roomId, RoomDto room_dto)
+        public Room UpdateRoom(int roomId, RoomDto roomDto)
         {
             var room = _context.Rooms.Find(roomId);
             if (room == null)
             {
                 return null;
             }
-            room.Number = room_dto.Number;
-            room.TypeId = room_dto.TypeId;
-            room.StatusId = room_dto.StatusId;
-            room.IsActive = room_dto.IsActive;
+            room.Number = roomDto.Number;
+            room.TypeId = roomDto.TypeId;
+            room.StatusId = roomDto.StatusId;
+            room.IsActive = roomDto.IsActive;
             _context.SaveChanges();
             return room;
         }
