@@ -213,4 +213,6 @@ values ('Family', 4, GETDATE()),
 ('Triple', 3, GETDATE())
 
 insert into Visuals.ObjectType (Type, DateCreated)
-values ('Room', GETDATE()), ('Lift', GETDATE()), ('Corridor', GETDATE())
+values ('Room', GETDATE()), 
+('Lift', GETDATE()), 
+('Corridor', GETDATE())
