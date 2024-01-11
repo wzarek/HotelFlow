@@ -178,7 +178,7 @@ namespace HotelFlow.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
-        public IActionResult AddRoom(Room room)
+        public IActionResult Add(Room room)
         {
             if (room == null)
             {
@@ -191,7 +191,7 @@ namespace HotelFlow.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
-        public IActionResult AddRooms(IEnumerable<Room> rooms)
+        public IActionResult AddMultiple(IEnumerable<Room> rooms)
         {
             if (rooms == null || !rooms.Any())
             {
