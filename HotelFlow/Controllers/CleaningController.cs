@@ -9,7 +9,7 @@ using static HotelFlow.Helpers.Constants;
 namespace HotelFlow.Controllers
 {
     [ApiController]
-    [Route("[controller]")] // tj hotelflow.pl/cleaning
+    [Route("[controller]")]
     public class CleaningController: ControllerBase
     {
         private CleaningScheduleService _cleaningScheduleService { get; set; }
@@ -21,29 +21,74 @@ namespace HotelFlow.Controllers
             _cleaningHistoryService = cleaningHistoryService;
         }
 
-        [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        [Authorize(Roles = "Admin,Employee")]
         [Route("[action]")]
-        public IActionResult AddCleaningUnit(CleaningSchedule unit)
+        public IActionResult All()
         {
-            return null; // dodaje sprzatanie (dzien, pokoj, id pracownika (????) )
-        }
-
-        [HttpPost]
-        [Authorize(Roles = "Admin")]
-        [Route("[action]")]
-        public IActionResult EditCleaningUnit(CleaningSchedule unit)
-        {
-            return null;
+            return Ok(_cleaningScheduleService.GetAllCleaningSchedules());
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
-        [Route("[action]")]
-        public IActionResult LoadCleaningHistory()
+        [Authorize(Roles = "Admin,Employee")]
+        [Route("[action]/{employeeId}")]
+        public IActionResult GetCleaningScheduleForEmployee(int employeeId)
         {
-            return null;
+            if (employeeId < 1)
+            {
+                return BadRequest();
+            }
+
+            return Ok(_cleaningScheduleService.GetCleaningSchedulesByFilter(c => c.EmployeeId == employeeId));
         }
 
+        [HttpPost]
+        [Authorize(Roles = "Admin,Employee")]
+        [Route("[action]")]
+        public IActionResult Add(CleaningSchedule schedule)
+        {
+            if (schedule == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(_cleaningScheduleService.CreateCleaningSchedule(schedule));
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin,Employee")]
+        [Route("[action]")]
+        public IActionResult Edit(CleaningSchedule schedule)
+        {
+            if (schedule == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(_cleaningScheduleService.UpdateCleaningSchedule(schedule));
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin,Employee")]
+        [Route("[action]/{id}")]
+        public IActionResult Delete(int id)
+        {
+            if (id < 1)
+            {
+                return BadRequest();
+            }
+
+            var schedule = _cleaningScheduleService.GetCleaningScheduleById(id);
+
+            if (schedule == null)
+            {
+                return NotFound();
+            }
+
+            _cleaningHistoryService.CreateCleaningHistory(new CleaningHistory { RoomId = schedule.RoomId, EmployeeId = schedule.EmployeeId });
+            _cleaningScheduleService.DeleteCleaningSchedule(id);
+
+            return Ok();
+        }
     }
 }
