@@ -86,9 +86,9 @@ namespace HotelFlow.Controllers
             return Ok(rooms);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("[action]")]
-        public IActionResult GetByType(IEnumerable<int> types)
+        public IActionResult GetByTypes(IEnumerable<int> types)
         {
             if (types == null || !types.Any())
             {
@@ -105,7 +105,7 @@ namespace HotelFlow.Controllers
             return Ok(rooms);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
         public IActionResult Edit(Room room)
@@ -119,7 +119,7 @@ namespace HotelFlow.Controllers
             return Ok(_roomService.UpdateRoom(room));
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
         public IActionResult EditMultiple(IEnumerable<Room> rooms)
@@ -133,7 +133,7 @@ namespace HotelFlow.Controllers
             return Ok();
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
         public IActionResult Delete(Room room)
@@ -161,7 +161,7 @@ namespace HotelFlow.Controllers
             return Ok();
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
         public IActionResult DeleteMultipleByIds(IEnumerable<int> ids)
@@ -175,7 +175,7 @@ namespace HotelFlow.Controllers
             return Ok();
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
         public IActionResult AddRoom(Room room)
@@ -188,7 +188,7 @@ namespace HotelFlow.Controllers
             return Ok(_roomService.CreateRoom(room));
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
         public IActionResult AddRooms(IEnumerable<Room> rooms)

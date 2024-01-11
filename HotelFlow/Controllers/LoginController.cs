@@ -18,7 +18,7 @@ namespace HotelFlow.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index([FromBody] LoginFormModel model)
+        public IActionResult Index(LoginFormModel model)
         {
             if (!ModelState.IsValid)
             {

@@ -67,7 +67,7 @@ namespace HotelFlow.Controllers
             return Ok();
         }
 
-        [HttpPost]
+        [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("[action]/{id}")]
         public IActionResult DeleteFloorSchema(int id)
@@ -97,7 +97,7 @@ namespace HotelFlow.Controllers
             return Ok();
         }
 
-        [HttpPost]
+        [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("[action]/{id}")]
         public IActionResult DeleteObjectPlacement(int id)

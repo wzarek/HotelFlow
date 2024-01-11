@@ -20,7 +20,7 @@ namespace HotelFlow.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index([FromBody] RegisterFormModel model)
+        public async Task<IActionResult> Index(RegisterFormModel model)
         {
             if (!ModelState.IsValid)
             {
