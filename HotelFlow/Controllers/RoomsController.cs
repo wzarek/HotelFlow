@@ -68,8 +68,8 @@ namespace HotelFlow.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin,Employee")]
-        [Route("[action]")]
-        public IActionResult GetByStatus(int statusId, bool getInactive)
+        [Route("[action]/{statusid}")]
+        public IActionResult GetByStatus(int statusId, bool getInactive = false)
         {
             if (statusId < 1)
             {

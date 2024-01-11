@@ -4,6 +4,13 @@ using System.Collections.Generic;
 
 namespace HotelFlow.Models.DTO
 {
+    public class UserDataDto
+    {
+        public string UserName { get; set; } = null!;
+        public string PhoneNumber { get; set; } = null;
+        public string EmailAddress { get; set; } = null!;
+        public bool IsActive { get; set; }
+    }
     public partial class User
     {
         public User()
@@ -13,6 +20,8 @@ namespace HotelFlow.Models.DTO
             ReservationCustomers = new HashSet<Reservation>();
             ReservationEmployees = new HashSet<Reservation>();
         }
+        
+
         public int Id { get; set; }
         public string UserName { get; set; } = null!;
         public string? PhoneNumber { get; set; }
