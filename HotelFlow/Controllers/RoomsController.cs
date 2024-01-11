@@ -78,7 +78,7 @@ namespace HotelFlow.Controllers
 
             var rooms = _roomService.GetRoomsByFilter(r => (getInactive && r.IsActive) && r.StatusId == statusId);
 
-            if (rooms.Any())
+            if (!rooms.Any())
             {
                 return BadRequest();
             }
@@ -97,7 +97,7 @@ namespace HotelFlow.Controllers
 
             var rooms = _roomService.GetRoomsByFilter(r => r.IsActive && types.Contains(r.TypeId));
 
-            if (rooms.Any())
+            if (!rooms.Any())
             {
                 return BadRequest();
             }
@@ -107,16 +107,15 @@ namespace HotelFlow.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Route("[action]")]
-        public IActionResult Edit(Room room)
+        [Route("[action]/{roomId}")]
+        public IActionResult Edit(int roomId, RoomDto room_dto)
         {
-            if (room == null)
+            if (roomId < 1 || room_dto == null)
             {
                 return BadRequest();
             }
 
-            
-            return Ok(_roomService.UpdateRoom(room));
+            return Ok(_roomService.UpdateRoom(roomId, room_dto));
         }
 
         [HttpPost]
@@ -178,14 +177,14 @@ namespace HotelFlow.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
-        public IActionResult Add(Room room)
+        public IActionResult Add(RoomDto roomDto)
         {
-            if (room == null)
+            if (roomDto == null)
             {
                 return BadRequest();
             }
 
-            return Ok(_roomService.CreateRoom(room));
+            return Ok(_roomService.CreateRoom(roomDto));
         }
 
         [HttpPost]
