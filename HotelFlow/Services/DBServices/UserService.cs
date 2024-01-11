@@ -29,17 +29,17 @@ namespace HotelFlow.Services.DBServices
 
         public User CreateUser(User user)
         {
-            _context.Users.Add(user);
+            _context.Users.AddIfNotExists(user, u => u.UserName == user.UserName || u.EmailAddress == user.EmailAddress);
             _context.SaveChanges();
             return user;
         }
 
-        public List<User> GetAllUsers(bool getInactiveUsers = false)
+        public IEnumerable<User> GetAllUsers(bool getInactiveUsers = false)
         {
             return _context.Users.Where(u => u.IsActive || getInactiveUsers).ToList();
         }
 
-        public List<User> GetTopNUsersWithOffset(int offset, int n = 50, bool getInactiveUsers = false)
+        public IEnumerable<User> GetTopNUsersWithOffset(int offset, int n = 50, bool getInactiveUsers = false)
         {
             return _context.Users.Where(u => u.IsActive || getInactiveUsers).Skip(n * offset).Take(n).ToList();
         }
@@ -49,7 +49,7 @@ namespace HotelFlow.Services.DBServices
             return _context.Users.FirstOrDefault(r => r.Id == id);
         }
 
-        public List<User> GetUsersByFilter(Expression<Func<User, bool>> filter)
+        public IEnumerable<User> GetUsersByFilter(Expression<Func<User, bool>> filter)
         {
             return _context.Users.Where(filter).ToList();
         }
