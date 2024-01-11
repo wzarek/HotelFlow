@@ -21,17 +21,9 @@ namespace HotelFlow.Controllers
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
-        public IActionResult All()
+        public IActionResult All(bool getInactive = false)
         {
-            return Ok(_userService.GetAllUsers());
-        }
-
-        [HttpGet]
-        [Authorize(Roles = "Admin")]
-        [Route("[action]")]
-        public IActionResult AllWithInactive()
-        {
-            return Ok(_userService.GetAllUsers(true));
+            return Ok(_userService.GetAllUsers(getInactive));
         }
 
         [HttpGet]
