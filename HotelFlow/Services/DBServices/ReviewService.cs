@@ -23,9 +23,14 @@ namespace HotelFlow.Services.DBServices
             return review;
         }
 
-        public List<Review> GetAllReviews()
+        public IEnumerable<Review> GetAllReviews()
         {
             return _context.Reviews.ToList();
+        }
+
+        public IEnumerable<Review> GetTopNReviewsWithOffset(int offset, int n = 50)
+        {
+            return _context.Reviews.Skip(n * offset).Take(n).ToList();
         }
 
         public Review GetReviewById(int id)
