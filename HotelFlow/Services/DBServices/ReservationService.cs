@@ -28,12 +28,17 @@ namespace HotelFlow.Services.DBServices
             return _context.Reservations.ToList();
         }
 
+        public IEnumerable<Reservation> GetTopNReservationsWithOffset(int offset, int n = 50)
+        {
+            return _context.Reservations.Skip(n * offset).Take(n).ToList();
+        }
+
         public Reservation GetReservationById(int id)
         {
             return _context.Reservations.FirstOrDefault(r => r.Id == id);
         }
 
-        public List<Reservation> GetReservationsByFilter(Expression<Func<Reservation, bool>> filter)
+        public IEnumerable<Reservation> GetReservationsByFilter(Expression<Func<Reservation, bool>> filter)
         {
             return _context.Reservations.Where(filter).ToList();
         }
