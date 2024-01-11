@@ -20,7 +20,6 @@ namespace HotelFlow.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin,Employee")]
         [Route("[action]")]
         public IActionResult All()
         {
@@ -36,7 +35,6 @@ namespace HotelFlow.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
         [Route("[action]/{offset}")]
         public IActionResult GetWithOffset(int offset)
         {
@@ -90,14 +88,14 @@ namespace HotelFlow.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetByType(int typeId)
+        public IActionResult GetByType(IEnumerable<int> types)
         {
-            if (typeId < 1)
+            if (types == null || !types.Any())
             {
                 return BadRequest();
             }
 
-            var rooms = _roomService.GetRoomsByFilter(r => r.IsActive && r.TypeId == typeId);
+            var rooms = _roomService.GetRoomsByFilter(r => r.IsActive && types.Contains(r.TypeId));
 
             if (rooms.Any())
             {

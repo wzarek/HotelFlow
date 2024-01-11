@@ -87,7 +87,7 @@ namespace HotelFlow.Services.DBServices
 
         public void DeleteRooms(IEnumerable<int> ids)
         {
-            var rooms = _context.Rooms.Where(u => ids.Contains(u.Id));
+            var rooms = _context.Rooms.Where(r => ids.Contains(r.Id));
             if (rooms.Any())
             {
                 _context.Rooms.RemoveRange(rooms);

@@ -1,5 +1,6 @@
 using HotelFlow.Models.DTO;
 using HotelFlow.Services.AuthServices;
+using HotelFlow.Services.DBServices;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -37,6 +38,20 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddScoped<UserAuthService>();
 builder.Services.AddScoped<RoleAuthService>();
+
+builder.Services.AddScoped<RoleService>();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<ReviewService>();
+builder.Services.AddScoped<RoomService>();
+builder.Services.AddScoped<CleaningHistoryService>();
+builder.Services.AddScoped<CleaningScheduleService>();
+builder.Services.AddScoped<FloorSchemaService>();
+builder.Services.AddScoped<ObjectPlacementService>();
+builder.Services.AddScoped<ObjectTypeService>();
+builder.Services.AddScoped<ReservationService>();
+builder.Services.AddScoped<ReservationStatusService>();
+builder.Services.AddScoped<RoomStatusService>();
+builder.Services.AddScoped<RoomTypeService>();
 
 var app = builder.Build();
 
