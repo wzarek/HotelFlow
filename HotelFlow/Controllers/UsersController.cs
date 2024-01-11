@@ -19,7 +19,7 @@ namespace HotelFlow.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [Route("[action]")]
         public IActionResult All()
         {
@@ -86,17 +86,17 @@ namespace HotelFlow.Controllers
             );
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Route("[action]")]
-        public IActionResult Edit(User user)
+        [Route("[action]/{id}")]
+        public IActionResult Edit(int id, UserDataDto user_dto)
         {
-            if (user == null)
+            if (id < 1 || user_dto == null)
             {
                 return BadRequest();
             }
 
-            return Ok(_userService.UpdateUser(user));
+            return Ok(_userService.UpdateUser(id, user_dto));
         }
 
         [HttpGet]

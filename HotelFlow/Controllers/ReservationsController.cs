@@ -21,7 +21,7 @@ namespace HotelFlow.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        [Route("[action]")]
+        [Route("[action]/{id}")]
         public IActionResult ViewReservation(int id)
         {
             return null; // pobiera info o rezerwacji

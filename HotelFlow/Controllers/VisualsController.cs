@@ -21,7 +21,7 @@ namespace HotelFlow.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        [Route("[action]")]
+        [Route("[action]/{floor}")]
         public IActionResult ShowFloor(int floor)
         {
             return null; // pobiera info o pietrze

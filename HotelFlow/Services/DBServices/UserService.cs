@@ -54,9 +54,17 @@ namespace HotelFlow.Services.DBServices
             return _context.Users.Where(filter).ToList();
         }
 
-        public User UpdateUser(User user)
+        public User UpdateUser(int id, UserDataDto user_dto)
         {
-            _context.Users.Update(user);
+            var user = _context.Users.Find(id);
+            if(user == null)
+            {
+                return null;
+            }
+            user.UserName = user_dto.UserName;
+            user.PhoneNumber = user_dto.PhoneNumber;
+            user.EmailAddress = user_dto.EmailAddress;
+            user.IsActive = user_dto.IsActive;
             _context.SaveChanges();
             return user;
         }
