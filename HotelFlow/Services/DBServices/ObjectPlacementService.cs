@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using HotelFlow.Models.DTO;
 using Microsoft.EntityFrameworkCore;
+using static HotelFlow.Helpers.Constants;
 
 namespace HotelFlow.Services.DBServices
 {
@@ -16,8 +17,17 @@ namespace HotelFlow.Services.DBServices
             _context = context;
         }
 
-        public ObjectPlacement CreateObjectPlacement(ObjectPlacement objectPlacement)
+        public ObjectPlacement CreateObjectPlacement(ObjectPlacementDto objectPlacementDto)
         {
+            var objectPlacement = new ObjectPlacement
+            {
+                ObjectTypeId = objectPlacementDto.ObjectTypeId,
+                FloorNumberId = objectPlacementDto.FloorNumberId,
+                PositionFrom = objectPlacementDto.PositionFrom,
+                PositionTo = objectPlacementDto.PositionTo,
+                RoomId = objectPlacementDto.RoomId,
+                DateCreated = DateTime.Now
+            };
             _context.ObjectPlacements.Add(objectPlacement);
             _context.SaveChanges();
             return objectPlacement;
@@ -38,9 +48,18 @@ namespace HotelFlow.Services.DBServices
             return _context.ObjectPlacements.Where(filter).ToList();
         }
 
-        public ObjectPlacement UpdateObjectPlacement(ObjectPlacement objectPlacement)
+        public ObjectPlacement UpdateObjectPlacement(int id, ObjectPlacementDto objectPlacementDto)
         {
-            _context.ObjectPlacements.Update(objectPlacement);
+            var objectPlacement = _context.ObjectPlacements.Find(id);
+            if(objectPlacement == null)
+            {
+                return null;
+            }
+            objectPlacement.ObjectTypeId = objectPlacementDto.ObjectTypeId;
+            objectPlacement.FloorNumberId = objectPlacementDto.FloorNumberId;
+            objectPlacement.PositionFrom = objectPlacementDto.PositionFrom;
+            objectPlacement.PositionTo = objectPlacementDto.PositionTo;
+            objectPlacement.RoomId = objectPlacementDto.RoomId;
             _context.SaveChanges();
             return objectPlacement;
         }

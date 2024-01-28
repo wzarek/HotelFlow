@@ -67,14 +67,14 @@ namespace HotelFlow.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
-        public IActionResult Edit(Reservation reservation)
+        public IActionResult Edit(int id, ReservationDataDto reservationDto)
         {
-            if (reservation == null)
+            if (id < 1 || reservationDto == null)
             {
                 return BadRequest();
             }
 
-            _reservationService.UpdateReservation(reservation);
+            _reservationService.UpdateReservation(id, reservationDto);
 
             return Ok();
         }
@@ -89,17 +89,7 @@ namespace HotelFlow.Controllers
                 return BadRequest();
             }
 
-            var reservation = _reservationService.GetReservationById(reservationId);
-            var reservationStatus = _reservationStatusService.GetReservationStatusById(statusId);
-
-            if (reservation == null || reservationStatus == null)
-            {
-                return NotFound();
-            }
-
-            reservation.StatusId = statusId;
-
-            _reservationService.UpdateReservation(reservation);
+            _reservationService.EditStatus(reservationId, statusId);
 
             return Ok();
         }
@@ -107,14 +97,14 @@ namespace HotelFlow.Controllers
         [HttpPost]
         [Authorize(Roles = "User,Employee,Admin")]
         [Route("[action]")]
-        public IActionResult Add(Reservation reservation)
+        public IActionResult Add(ReservationDataDto reservationDto)
         {
-            if (reservation == null)
+            if (reservationDto == null)
             {
                 return BadRequest();
             }
 
-            return Ok(_reservationService.CreateReservation(reservation)); 
+            return Ok(_reservationService.CreateReservation(reservationDto)); 
         }
 
         [HttpGet]

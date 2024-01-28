@@ -16,8 +16,18 @@ namespace HotelFlow.Services.DBServices
             _context = context;
         }
 
-        public Reservation CreateReservation(Reservation reservation)
+        public Reservation CreateReservation(ReservationDataDto reservationDto)
         {
+            var reservation = new Reservation
+            {
+                RoomId = reservationDto.RoomId,
+                CustomerId = reservationDto.CustomerId,
+                EmployeeId = reservationDto.EmployeeId,
+                DateFrom = reservationDto.DateFrom,
+                DateTo = reservationDto.DateTo,
+                StatusId = reservationDto.StatusId,
+                DateCreated = DateTime.Now
+            };
             _context.Reservations.Add(reservation);
             _context.SaveChanges();
             return reservation;
@@ -43,11 +53,34 @@ namespace HotelFlow.Services.DBServices
             return _context.Reservations.Where(filter).ToList();
         }
 
-        public Reservation UpdateReservation(Reservation reservation)
+        public Reservation UpdateReservation(int id, ReservationDataDto reservationDto)
         {
-            _context.Reservations.Update(reservation);
+            var reservation = _context.Reservations.FirstOrDefault(r => r.Id == id);
+            if(reservation == null)
+            {
+                return null;
+            }
+            reservation.RoomId = reservationDto.RoomId;
+            reservation.CustomerId = reservationDto.CustomerId;
+            reservation.EmployeeId = reservationDto.EmployeeId;
+            reservation.DateFrom = reservationDto.DateFrom;
+            reservation.DateTo = reservationDto.DateTo;
+            reservation.StatusId = reservationDto.StatusId;
             _context.SaveChanges();
             return reservation;
+        }
+        
+        public Reservation EditStatus(int id, int statusId)
+        {
+            var reservation = _context.Reservations.FirstOrDefault(r => r.Id == id);
+            if (reservation == null)
+            {
+                return null;
+            }
+            reservation.StatusId = statusId;
+            _context.SaveChanges();
+            return reservation;
+
         }
 
         public void DeleteReservation(int id)

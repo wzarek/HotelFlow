@@ -16,8 +16,16 @@ namespace HotelFlow.Services.DBServices
             _context = context;
         }
 
-        public FloorSchema CreateFloorSchema(FloorSchema floorSchema)
+        public FloorSchema CreateFloorSchema(FloorSchemaDto floorSchemaDto)
         {
+            var floorSchema = new FloorSchema
+            {
+                FloorNumber = floorSchemaDto.FloorNumber,
+                Width = floorSchemaDto.Width,
+                Height = floorSchemaDto.Height,
+                DateCreated = DateTime.Now
+            };
+
             _context.FloorSchemas.Add(floorSchema);
             _context.SaveChanges();
             return floorSchema;
@@ -38,9 +46,16 @@ namespace HotelFlow.Services.DBServices
             return _context.FloorSchemas.Where(filter).ToList();
         }
 
-        public FloorSchema UpdateFloorSchema(FloorSchema floorSchema)
+        public FloorSchema UpdateFloorSchema(int id, FloorSchemaDto floorSchemaDto)
         {
-            _context.FloorSchemas.Update(floorSchema);
+            var floorSchema = _context.FloorSchemas.Find(id);
+            if (floorSchema == null)
+            {
+                return null;
+            }
+            floorSchema.FloorNumber = floorSchemaDto.FloorNumber;
+            floorSchema.Width = floorSchemaDto.Width;
+            floorSchema.Height = floorSchemaDto.Height;
             _context.SaveChanges();
             return floorSchema;
         }
