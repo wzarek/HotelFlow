@@ -45,27 +45,27 @@ namespace HotelFlow.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin,Employee")]
         [Route("[action]")]
-        public IActionResult Add(CleaningSchedule schedule)
+        public IActionResult Add(CleaningScheduleDto scheduleDto)
         {
-            if (schedule == null)
+            if (scheduleDto == null)
             {
                 return BadRequest();
             }
 
-            return Ok(_cleaningScheduleService.CreateCleaningSchedule(schedule));
+            return Ok(_cleaningScheduleService.CreateCleaningSchedule(scheduleDto));
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin,Employee")]
-        [Route("[action]")]
-        public IActionResult Edit(CleaningSchedule schedule)
+        [Route("[action]/{id}")]
+        public IActionResult Edit(int id, CleaningScheduleDto scheduleDto)
         {
-            if (schedule == null)
+            if (id < 1 || scheduleDto == null)
             {
                 return BadRequest();
             }
 
-            return Ok(_cleaningScheduleService.UpdateCleaningSchedule(schedule));
+            return Ok(_cleaningScheduleService.UpdateCleaningSchedule(id, scheduleDto));
         }
 
         [HttpGet]
