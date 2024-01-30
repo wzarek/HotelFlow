@@ -1,21 +1,25 @@
-export const getJWTTokenFromSessionStorage = () => {
-    const token = sessionStorage.getItem('token');
+import { AuthModelToGet } from "../../models/auth/AuthModels"
 
-    if (token === null) {
-        console.warn("No token found in session storage.");
-        return null;
+export const getAuthDataFromSessionStorage = () => {
+    const data = sessionStorage.getItem('AuthData')
+
+    if (data === null) {
+        console.warn("No auth data found in session storage.")
+        return null
     }
 
-    return token;
+    let dataObj = JSON.parse(data)
+
+    return AuthModelToGet.fromSessionData(dataObj.token, dataObj.role)
 }
 
-export const setJWTTokenInSessionStorage = (token) => {
-    if (!token) {
-        console.error("Cannot set an empty token in session storage.");
-        return;
+export const setAuthDataInSessionStorage = (authData) => {
+    if (!authData) {
+        console.error("Cannot set an empty auth data in session storage.")
+        return
     }
 
-    sessionStorage.setItem('token', token);
+    sessionStorage.setItem('AuthData', authData)
 }
 
 export const authConstants = { guest: 'guest', client: 'client', employee: 'employee', admin: 'admin' }

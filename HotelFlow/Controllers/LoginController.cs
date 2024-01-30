@@ -2,6 +2,7 @@
 using HotelFlow.Models.FormModels;
 using HotelFlow.Services.AuthServices;
 using Microsoft.AspNetCore.Mvc;
+using static HotelFlow.Helpers.Constants;
 
 namespace HotelFlow.Controllers
 {
@@ -35,7 +36,7 @@ namespace HotelFlow.Controllers
             var secret = _configuration["JwtSettings:SecretKey"];
             var token = TokenManager.GenerateJwtToken(user, secret);
 
-            return Ok(new { token });
+            return Ok(new { token, role = ((Roles)user.RoleId).GetDescription().ToLower() });
         }
     }
 }
