@@ -8,7 +8,7 @@ using static HotelFlow.Helpers.Constants;
 namespace HotelFlow.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
         private UserService _userService { get; set; }

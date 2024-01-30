@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HotelFlow.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class RegisterController : ControllerBase
     {
         private readonly UserAuthService _userManager;

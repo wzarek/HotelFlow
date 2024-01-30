@@ -29,12 +29,11 @@ export class NavMenu extends Component {
               <div className="flex items-center justify-between py-3">
                 <Link to="/">HotelFlow</Link>
                 <div className="hidden sm:flex sm:items-center">
-                    <NavItem to="/" name='Home' />
-                    <NavItem to="/counter" name='Counter' />
+                    <NavItem to="/" name='home' />
                 </div>
                 <div className="hidden sm:flex sm:items-center">
-                      <a href="#" className="text-gray-800 text-sm font-semibold hover:text-blue-600 mr-4">Sign in</a>
-                      <a href="#" className="text-gray-800 text-sm font-semibold border px-4 py-2 rounded-lg hover:text-blue-600 hover:border-blue-600">Sign up</a>
+                      <Link to="/login" className="text-gray-800 text-sm font-semibold hover:text-blue-600 mr-4">sign in</Link>
+                      <Link to="/register" className="text-gray-800 text-sm font-semibold border px-4 py-2 rounded-lg hover:text-blue-600 hover:border-blue-600">sign up</Link>
                     </div>
               </div>
             </div>

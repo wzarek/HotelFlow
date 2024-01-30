@@ -9,7 +9,7 @@ import RoomTriple from '../../imgs/tmp/RoomTriple.jpg'
 import RoomQuadruple from '../../imgs/tmp/RoomQuadruple.jpg'
 import RoomCard from '../shared/RoomCard'
 
-export const Home = () => {
+const Home = () => {
     return (
         <main>
             <section className='py-[10em] bg-gray-300 w-full flex items-center gap-[5rem] relative rounded-b-[30em] pb-[15em]'>
@@ -19,7 +19,7 @@ export const Home = () => {
                     <h2 className='text-[1.5rem] font-medium mb-[2rem] text-center'>how about your trip?</h2>
                     <SearchForm />
                 </section>
-                <GoDown className="absolute z-0 w-[10rem] bottom-[-5rem] right-[47%] animate-button-down cursor-pointer duration-100 hover:w-[12rem] hover:bottom-[-6rem] hover:right-[46%]"/>
+                <GoDown className="absolute z-0 w-[10rem] bottom-[-5rem] right-[47%] animate-button-down duration-100"/>
             </section>
             <section className='w-[80%] mx-auto mt-[10rem] relative'>
                 <div className='flex justify-between items-center gap-[2rem] relative z-10'>
@@ -38,3 +38,5 @@ export const Home = () => {
         </main>
     )
 }
+
+export default Home
