@@ -23,19 +23,18 @@ export class NavMenu extends Component {
   render() {
     return (
       <header>
-        <div className="bg-gray-100 font-sans w-full m-0">
-          <div className="bg-white shadow">
+        <div className="bg-blue-100 font-sans w-full m-0 z-[100] fixed">
             <div className="container mx-auto px-4">
               <div className="flex items-center justify-between py-3">
                 <Link to="/">HotelFlow</Link>
                 <div className="hidden sm:flex sm:items-center">
                     <NavItem to="/" name='home' />
+                    <NavItem to="/find-room" name='znajdź pokój' />
                 </div>
                 <div className="hidden sm:flex sm:items-center">
-                      <Link to="/login" className="text-gray-800 text-sm font-semibold hover:text-blue-600 mr-4">sign in</Link>
-                      <Link to="/register" className="text-gray-800 text-sm font-semibold border px-4 py-2 rounded-lg hover:text-blue-600 hover:border-blue-600">sign up</Link>
-                    </div>
-              </div>
+                      <Link to="/login" className="text-gray-800 text-sm font-semibold hover:text-blue-600 mr-4">logowanie</Link>
+                      <Link to="/register" className="text-gray-800 text-sm font-semibold border-2 border-solid border-blue-900 px-4 py-2 rounded-lg hover:text-blue-600 hover:border-blue-600">rejestracja</Link>
+                </div>
             </div>
           </div>
         </div>
