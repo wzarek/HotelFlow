@@ -48,11 +48,8 @@ namespace HotelFlow.Controllers
                 return Ok(new { message = "User registered successfully" });
             }
 
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Message);
-            }
-            return BadRequest(ModelState);
+            var err = string.Join(' ', result.Errors.Select(e => e.Message).ToArray());
+            return BadRequest(new { message = err });;
         }
     }
 }
