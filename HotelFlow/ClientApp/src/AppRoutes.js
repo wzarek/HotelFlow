@@ -1,5 +1,6 @@
 import Home from "./components/home/Home"
 import Login from "./components/shared/pages/Login"
+import Logout from "./components/shared/pages/Logout"
 import Register from "./components/shared/pages/Register"
 import NotFound from "./components/shared/pages/NotFound"
 import RoomSearch from "./components/shared/pages/RoomSearch"
@@ -22,18 +23,24 @@ const AppRoutes = [
   },
   {
     index: 2,
+    path: '/logout',
+    role: authConstants.guest,
+    element: <Logout />
+  },
+  {
+    index: 3,
     path: '/register',
     role: authConstants.guest,
     element: <Register />
   },
   {
-    index: 3,
+    index: 4,
     path: '/find-room',
     role: authConstants.guest,
     element: <RoomSearch />
   },
   {
-    index: 4,
+    index: 5,
     path: '/admin/users-list',
     role: authConstants.admin,
     element: <UsersListPage />

@@ -15,6 +15,11 @@ export const NavMenu = () => {
                 <div className="hidden sm:flex sm:items-center">
                     <NavItem to="/" name='home' />
                     <NavItem to="/find-room" name='znajdź pokój' />
+                    {
+                      auth.isAuthenticated &&
+
+                      <Link to="/logout" justLoggedOut={true} className="text-gray-800 text-sm font-semibold border-2 border-solid border-blue-900 px-4 py-2 rounded-lg hover:text-blue-600 hover:border-blue-600">wyloguj</Link>
+                    }
                 </div>
                 {
                     !auth.isAuthenticated &&

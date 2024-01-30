@@ -22,4 +22,8 @@ export const setAuthDataInSessionStorage = (authData) => {
     sessionStorage.setItem('AuthData', authData)
 }
 
+export const clearAuthDataInSessionStorage = () => {
+    sessionStorage.removeItem('AuthData')
+}
+
 export const authConstants = { guest: 'guest', client: 'client', employee: 'employee', admin: 'admin' }

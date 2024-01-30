@@ -24,3 +24,5 @@ export const AuthProvider = ({ children }) => {
 }
 
 export const useAuth = () => useContext(AuthContext)
+
+export const AUTH_DEFAULT = { isAuthenticated: false, token: null, role: authConstants.guest}
