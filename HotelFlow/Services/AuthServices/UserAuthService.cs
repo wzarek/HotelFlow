@@ -1,4 +1,5 @@
-﻿using HotelFlow.Models.Auth;
+﻿using HotelFlow.Helpers;
+using HotelFlow.Models.Auth;
 using HotelFlow.Models.DTO;
 using HotelFlow.Models.Exceptions;
 using HotelFlow.Validators;
@@ -29,7 +30,14 @@ namespace HotelFlow.Services.AuthServices
                 }
 
                 user.Password = _passwordHasher.HashPassword(null, password);
-                _context.Users.Add(user);
+                var added = _context.Users.AddIfNotExists(user, u => u.UserName == user.UserName || u.EmailAddress == user.EmailAddress);
+
+                if (added == null)
+                {
+                    var exception = new UserValidationException("User already exists");
+                    return new UserAuthServiceResult { Succeeded = false, Errors = new List<IValidationException> { exception } };
+                }
+
                 await _context.SaveChangesAsync();
 
                 return new UserAuthServiceResult { Succeeded = true, User = user };

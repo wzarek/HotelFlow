@@ -1,8 +1,11 @@
-import { getJWTTokenFromSessionStorage } from './authorizationServices'
+import { getAuthDataFromSessionStorage } from './auth/authorizationServices'
+
+export const URL_BASE = 'https://localhost:44429/api'
 
 export const fetchGETJSONData = async (url) => {
     try {
-        const token = getJWTTokenFromSessionStorage() || 'no-token'
+        const authData = getAuthDataFromSessionStorage()
+        const token = authData?.token ?? 'no-token'
 
         const response = await fetch(url, {
             method: 'GET', 
@@ -24,7 +27,8 @@ export const fetchGETJSONData = async (url) => {
 
 export const fetchPOSTJSONData = async (url, jsonData) => {
     try {
-        const token = getJWTTokenFromSessionStorage() || 'no-token'
+        const authData = getAuthDataFromSessionStorage()
+        const token = authData?.token ?? 'no-token'
 
         const response = await fetch(url, {
             method: 'POST', 
@@ -36,7 +40,8 @@ export const fetchPOSTJSONData = async (url, jsonData) => {
         })
 
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`)
+            let res = await response.json()
+            throw new Error(`[${response.status}] ${res.message}`)
         }
 
         return await response.json()

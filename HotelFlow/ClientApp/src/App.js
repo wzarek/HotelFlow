@@ -1,16 +1,16 @@
 import React from 'react'
 import AppRoutesComponent from './components/shared/AppRoutesComponent'
 import { Layout } from './components/Layout'
-import { AuthProvider, useAuth } from './services/auth/AuthProvider'
+import { AuthProvider } from './services/auth/AuthProvider'
 import './custom.css'
 
 const App = () => {
     return (
-      <Layout>
-        <AuthProvider>
+      <AuthProvider>
+        <Layout>
           <AppRoutesComponent />
-        </AuthProvider>
-      </Layout>
+        </Layout>
+      </AuthProvider>
     )
 }
 
