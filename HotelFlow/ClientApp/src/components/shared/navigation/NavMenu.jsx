@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import NavItem from './NavItem'
 import { useAuth } from '../../../services/auth/AuthProvider';
