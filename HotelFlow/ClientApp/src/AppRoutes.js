@@ -5,6 +5,7 @@ import NotFound from "./components/shared/pages/NotFound"
 import RoomSearch from "./components/shared/pages/RoomSearch"
 import UsersListPage from "./components/admin/UsersListPage"
 import { authConstants } from "./services/auth/authorizationServices"
+import { Navigate } from "react-router-dom"
 
 const AppRoutes = [
   {
@@ -39,9 +40,15 @@ const AppRoutes = [
   },
   {
     index: 100,
-    path: '*',
+    path: '/not-found',
     role: authConstants.guest,
     element: <NotFound />
+  },
+  {
+    index: 100,
+    path: '*',
+    role: authConstants.guest,
+    element: <Navigate to='/not-found' />
   }
 ]
 

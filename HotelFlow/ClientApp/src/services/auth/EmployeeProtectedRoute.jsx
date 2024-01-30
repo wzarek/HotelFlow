@@ -8,7 +8,7 @@ const EmployeeProtectedRoute = ({ element }) => {
     const { auth } = useAuth()
 
     if (auth.role != authConstants.admin || auth.role != authConstants.employee) {
-        return <Navigate to="/notfound" />
+        return <Navigate to="/not-found" />
     }
 
     return element

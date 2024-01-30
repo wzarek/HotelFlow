@@ -7,7 +7,7 @@ const AdminProtectedRoute = ({ element }) => {
     const { auth } = useAuth()
 
     if (!auth.isAuthenticated || auth.role !== authConstants.admin) {
-        return <Navigate to="/notfound" />
+        return <Navigate to="/not-found" />
     }
 
     return element

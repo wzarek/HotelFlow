@@ -8,24 +8,22 @@ import ClientProtectedRoute from '../../services/auth/ClientProtectedRoute';
 import { authConstants } from '../../services/auth/authorizationServices';
 
 const AppRoutesComponent = () => {
-    const { auth } = useAuth();
-
   return (
     <Routes>
         {AppRoutes.map((route, index) => {
             const { element, role, ...rest } = route
 
-            let ElementComponent = element
+            let elementComponent = element
 
             if (role == authConstants.admin) {
-                ElementComponent = <AdminProtectedRoute element={element} />;
+                elementComponent = <AdminProtectedRoute element={element} />;
             } else if (role == authConstants.employee) {
-                ElementComponent = <EmployeeProtectedRoute element={element} />;
+                elementComponent = <EmployeeProtectedRoute element={element} />;
             } else if (role == authConstants.client) {
-                ElementComponent = <ClientProtectedRoute element={element} />;
+                elementComponent = <ClientProtectedRoute element={element} />;
             }
 
-            return <Route key={index} {...rest} element={ElementComponent} />;
+            return <Route key={index} {...rest} element={elementComponent} />;
         })}
     </Routes>
   )

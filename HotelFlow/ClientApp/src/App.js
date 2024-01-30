@@ -6,11 +6,11 @@ import './custom.css'
 
 const App = () => {
     return (
-      <Layout>
-        <AuthProvider>
+      <AuthProvider>
+        <Layout>
           <AppRoutesComponent />
-        </AuthProvider>
-      </Layout>
+        </Layout>
+      </AuthProvider>
     )
 }
 
