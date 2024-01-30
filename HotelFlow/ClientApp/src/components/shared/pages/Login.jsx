@@ -1,8 +1,13 @@
 import React from 'react'
 import {ReactComponent as LoginImg} from '../../../imgs/Login.svg'
+import { useAuth } from '../../../services/auth/AuthProvider'
+import { Navigate } from 'react-router-dom'
 
 const Login = () => {
+  const { auth } = useAuth()
+
   return (
+    !auth.isAuthenticated ?
     <div className='h-[90vh] w-full flex flex-col justify-center gap-[5rem] items-center relative'>
       <div className='flex justify-between items-center gap-[2rem] relative z-10'>
         <div className='w-[30vw] h-[5px] bg-black rounded-lg'></div>
@@ -22,6 +27,8 @@ const Login = () => {
       </form>
       <LoginImg className='absolute -z-10 h-[100%] opacity-[0.3] right-[10%] top-[10%]' />
     </div>
+    :
+    <Navigate to='/' />
   )
 }
 
