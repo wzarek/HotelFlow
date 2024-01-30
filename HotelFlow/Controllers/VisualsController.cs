@@ -10,7 +10,7 @@ using static HotelFlow.Helpers.Constants;
 namespace HotelFlow.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class VisualsController : ControllerBase
     {
         private FloorSchemaService _floorSchemaService { get; set; }

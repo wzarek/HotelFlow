@@ -9,7 +9,7 @@ using static HotelFlow.Helpers.Constants;
 namespace HotelFlow.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class ReservationsController : ControllerBase
     {
         private ReservationService _reservationService { get; set; }
@@ -119,7 +119,7 @@ namespace HotelFlow.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin, Employee")]
-        [Route("[controller]/{id}")]
+        [Route("[action]/{id}")]
         public IActionResult GetReservationForReview(int id)
         {
             if (id < 1)
