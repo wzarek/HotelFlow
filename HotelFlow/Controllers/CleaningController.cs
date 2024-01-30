@@ -9,7 +9,7 @@ using static HotelFlow.Helpers.Constants;
 namespace HotelFlow.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class CleaningController: ControllerBase
     {
         private CleaningScheduleService _cleaningScheduleService { get; set; }

@@ -1,20 +1,16 @@
 import React from 'react'
-import { Route, Routes } from 'react-router-dom'
-import AppRoutes from './AppRoutes'
+import AppRoutesComponent from './components/shared/AppRoutesComponent'
 import { Layout } from './components/Layout'
+import { AuthProvider } from './services/auth/AuthProvider'
 import './custom.css'
 
 const App = () => {
- 
     return (
-      <Layout>
-        <Routes>
-          {AppRoutes.map((route, index) => {
-            const { element, ...rest } = route
-            return <Route key={index} {...rest} element={element} />
-          })}
-        </Routes>
-      </Layout>
+      <AuthProvider>
+        <Layout>
+          <AppRoutesComponent />
+        </Layout>
+      </AuthProvider>
     )
 }
 
