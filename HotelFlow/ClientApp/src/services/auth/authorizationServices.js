@@ -17,3 +17,5 @@ export const setJWTTokenInSessionStorage = (token) => {
 
     sessionStorage.setItem('token', token);
 }
+
+export const authConstants = { guest: 'guest', client: 'client', employee: 'employee', admin: 'admin' }

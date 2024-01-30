@@ -1,9 +1,10 @@
 import React from 'react'
+import {ReactComponent as Error404} from '../../../imgs/404.svg'
 
 const NotFound = () => {
   return (
     <div className='h-[80vh] flex justify-center items-center'>
-        <h1 className='text-blue-600 font-semibold text-[5rem]'>Sorry, page not found</h1>
+        <Error404 className='w-[50%]'/>
     </div>
   )
 }

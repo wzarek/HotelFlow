@@ -1,5 +1,4 @@
 import React from 'react'
-import SubmitInput from './SubmitInput'
 
 const RoomCard = ({dateFrom, dateTo, name, price, numPerson, img}) => {
   return (
@@ -7,9 +6,11 @@ const RoomCard = ({dateFrom, dateTo, name, price, numPerson, img}) => {
         <div className='bg-black w-full aspect-square rounded-lg overflow-hidden'>
           <img className='aspect-square w-full object-cover duration-100 group-hover:scale-110' src={img} />
         </div>
-        <p className='absolute top-[1rem] left-[3rem] text-blue-600 font-bold duration-100 group-hover:scale-110 group-hover:translate-x-[15%] group-hover:text-red-600'>{dateFrom} - {dateTo}</p>
+        {
+          dateFrom && dateTo && (<p className='absolute top-[1rem] left-[3rem] text-blue-600 font-bold duration-100 group-hover:scale-110 group-hover:translate-x-[15%] group-hover:text-red-600'>{dateFrom} - {dateTo}</p>)
+        }
         <div className='pt-[.5rem] w-full flex justify-between items-center'>
-            <p className='text-[0.8rem] font-medium duration-100 group-hover:text-red-600 group-hover:scale-110 group-hover:translate-x-[15%]'>{price} zł / {numPerson} pers.</p>
+            <p className='text-[0.8rem] font-medium duration-100 group-hover:text-red-600 group-hover:scale-110 group-hover:translate-x-[15%]'>{price} zł / {numPerson} os.</p>
         </div>
         <div className='w-full flex justify-between items-center'>
             <h4 className='text-[1.25rem] font-medium duration-100 group-hover:scale-110 group-hover:translate-x-[10%]'>{name}</h4>
