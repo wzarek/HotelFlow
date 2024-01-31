@@ -35,6 +35,7 @@ namespace HotelFlow.Controllers
                         Id = room.Id,
                         Number = room.Number,
                         Type = room.Type.Name,
+                        NumberOfPeople = room.Type.NumberOfPeople,
                         Status = room.Status.Name,
                         IsActive = room.IsActive
                     }    
@@ -62,6 +63,59 @@ namespace HotelFlow.Controllers
                         Number = room.Number,
                         Type = room.Type.Name,
                         Status = room.Status.Name,
+                        NumberOfPeople = room.Type.NumberOfPeople,
+                        IsActive = room.IsActive
+                    }
+                );
+            }
+
+            return Ok(roomsToSend);
+        }
+
+        public class RoomFilter
+        {
+            public string? dateFrom { get; set; }
+            public string? dateTo { get; set; }
+            public int numberOfPeople { get; set; }
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult AllFiltered(RoomFilter filter)
+        {
+            DateTime dateFromD = DateTime.MaxValue;
+            DateTime dateToD = DateTime.MaxValue;
+
+            if (filter.dateFrom != null && filter.dateFrom != string.Empty)
+            {
+                dateFromD = DateTime.ParseExact(filter.dateFrom, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+            }
+
+            if (filter.dateTo != null && filter.dateTo != string.Empty)
+            {
+                dateToD = DateTime.ParseExact(filter.dateTo, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+            }
+
+            var rooms = _roomService.GetRoomsByFilter(
+                room => (!room.Reservations.Any(
+                    res => (res.DateFrom <= dateFromD && res.DateTo > dateFromD) 
+                            || (res.DateFrom < dateToD && res.DateTo > dateToD) 
+                ) &&
+                    (filter.numberOfPeople == 0 || room.Type.NumberOfPeople >= filter.numberOfPeople)
+                )
+            );
+            var roomsToSend = new List<RoomDataToSend>();
+
+            foreach (var room in rooms)
+            {
+                roomsToSend.Add(
+                    new RoomDataToSend
+                    {
+                        Id = room.Id,
+                        Number = room.Number,
+                        Type = room.Type.Name,
+                        Status = room.Status.Name,
+                        NumberOfPeople = room.Type.NumberOfPeople,
                         IsActive = room.IsActive
                     }
                 );
@@ -113,6 +167,7 @@ namespace HotelFlow.Controllers
                 Number = room.Number,
                 Type = room.Type.Name,
                 Status = room.Status.Name,
+                NumberOfPeople = room.Type.NumberOfPeople,
                 IsActive = room.IsActive
             };
 

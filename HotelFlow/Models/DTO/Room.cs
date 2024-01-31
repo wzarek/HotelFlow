@@ -18,6 +18,7 @@ namespace HotelFlow.Models.DTO
         public string Type { get; set; }
         public string Status { get; set; }
         public bool IsActive { get; set; }
+        public int NumberOfPeople { get; set; }
     }
 
     public partial class Room

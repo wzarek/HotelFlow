@@ -63,7 +63,10 @@ namespace HotelFlow.Services.DBServices
 
         public IEnumerable<Room> GetAllRooms(bool getInactiveRooms = false)
         {
-            return _context.Rooms.Where(r => r.IsActive || getInactiveRooms).ToList();
+            return _context.Rooms.Where(r => r.IsActive || getInactiveRooms)
+                .Include(r => r.Type)
+                .Include(r => r.Status)
+                .ToList();
         }
 
         public IEnumerable<Room> GetTopNRoomsWithOffset(int offset, int n = 50, bool getInactiveRooms = false)
@@ -78,7 +81,10 @@ namespace HotelFlow.Services.DBServices
 
         public IEnumerable<Room> GetRoomsByFilter(Expression<Func<Room, bool>> filter)
         {
-            return _context.Rooms.Where(filter).ToList();
+            return _context.Rooms.Where(filter)
+                .Include(r => r.Type)
+                .Include(r => r.Status)
+                .ToList();
         }
 
         public Room UpdateRoom(int roomId, RoomDto roomDto)

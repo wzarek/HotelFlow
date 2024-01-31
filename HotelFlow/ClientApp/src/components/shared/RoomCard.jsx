@@ -4,6 +4,7 @@ import RoomSingle from '../../imgs/tmp/RoomSingle.jpg'
 import RoomDouble from '../../imgs/tmp/RoomDouble.jpg'
 import RoomTriple from '../../imgs/tmp/RoomTriple.jpg'
 import RoomQuadruple from '../../imgs/tmp/RoomQuadruple.jpg'
+import RoomSix from '../../imgs/tmp/RoomSix.jpg'
 
 const RoomCard = ({dateFrom, dateTo, name, price, numPerson, vertical, border}) => {
 
@@ -22,6 +23,9 @@ const RoomCard = ({dateFrom, dateTo, name, price, numPerson, vertical, border}) 
     case 4:
       img = RoomQuadruple
       break
+    case 6:
+        img = RoomSix
+        break
   }
 
   let containerAccentStyle = border ? 'border-2 border-grey-200' : 'shadow-lg'

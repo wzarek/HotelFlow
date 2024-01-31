@@ -36,6 +36,7 @@ const context =  [
 
   "/api/rooms",
   "/api/rooms/all",
+  "/api/rooms/allfiltered",
   "/api/rooms/random",
   "/api/rooms/allwithinactive",
   "/api/rooms/getwithoffset",

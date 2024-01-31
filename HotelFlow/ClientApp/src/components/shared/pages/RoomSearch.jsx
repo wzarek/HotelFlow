@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import RoomSingle from '../../../imgs/tmp/RoomSingle.jpg'
-import RoomDouble from '../../../imgs/tmp/RoomDouble.jpg'
-import RoomTriple from '../../../imgs/tmp/RoomTriple.jpg'
-import RoomQuadruple from '../../../imgs/tmp/RoomQuadruple.jpg'
 import RoomCard from '../../shared/RoomCard'
 import SubmitInputSecondary from '../forms/SubmitInputSecondary'
 import Heading from '../Heading'
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom'
+import { URL_BASE, fetchPOSTJSONData } from '../../../services/databaseServices'
+import { RoomToGet } from '../../../models/room/roomHelpers'
 
 const RoomSearch = () => {
   const navigate = useNavigate()
@@ -14,11 +12,32 @@ const RoomSearch = () => {
   const [defaultDateFrom, setDefaultDateFrom] = useState(null)
   const [defaultDateTo, setDefaultDateTo] = useState(null)
   const [defaultNumPeople, setDefaultNumPeople] = useState(null)
+  const [rooms, setRooms] = useState([])
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState('')
+
+  const fetchData = async (data) => {
+    try{
+        setLoading(true)
+
+        let JSONdata = await fetchPOSTJSONData(`${URL_BASE}/rooms/allfiltered`, JSON.stringify(data))
+        let roomsData = RoomToGet.fromJSONList(JSON.stringify(JSONdata))
+
+        setRooms(roomsData)
+        setLoading(false)
+      }catch(err){
+        console.error(err)
+        setError(err.message)
+        setLoading(false)
+      }
+  } 
 
   useEffect(() => {
     setDefaultDateFrom(searchParams.get('dateFrom') ?? null)
     setDefaultDateTo(searchParams.get('dateTo') ?? null)
     setDefaultNumPeople(searchParams.get('numPeople') ?? null)
+
+    fetchData({dateFrom: searchParams.get('dateFrom') ?? null, dateTo: searchParams.get('dateTo') ?? null, numberOfPeople: searchParams.get('numPeople') ?? 0})
   }, [])
 
   const handleSearchSubmit = (e) => {
@@ -31,6 +50,8 @@ const RoomSearch = () => {
       pathname: '/find-room',
       search: `?${params}`,
     })
+
+    fetchData({dateFrom: dateFrom.value, dateTo: dateTo.value, numberOfPeople: numPeople.value})
   }
 
   return (
@@ -49,20 +70,22 @@ const RoomSearch = () => {
           </div>
           <div className='flex justify-between items-center my-[.5rem]'>
             <label htmlFor='numPeople'>ilość osób</label>
-            <input defaultValue={defaultNumPeople} className='w-[8em] bg-white p-[.5rem] rounded-lg text-black border-blue-600 border-solid border-[1.5px]' type='number' min={1} max={4} id='numPeople' name='numPeople' />
+            <input defaultValue={defaultNumPeople} className='w-[8em] bg-white p-[.5rem] rounded-lg text-black border-blue-600 border-solid border-[1.5px]' type='number' min={1} max={6} id='numPeople' name='numPeople' />
           </div>
             <SubmitInputSecondary classes='mt-auto' name='submit' text='filtruj' />
           </form>
         </aside>
         <section className='w-2/3 grid grid-cols-3 gap-3'>
-          <RoomCard name='pokój dla singla' img={RoomSingle} price={100} numPerson={1} />
-          <RoomCard name='pokój dla pary' img={RoomDouble} price={150} numPerson={2} />
-          <RoomCard name='pokój dla trójki' img={RoomTriple} price={230} numPerson={3} />
-          <RoomCard name='pokój dla czwórki' img={RoomQuadruple} price={330} numPerson={4} />
-          <RoomCard name='pokój dla singla' img={RoomSingle} price={100} numPerson={1} />
-          <RoomCard name='pokój dla pary' img={RoomDouble} price={150} numPerson={2} />
-          <RoomCard name='pokój dla trójki' img={RoomTriple} price={230} numPerson={3} />
-          <RoomCard name='pokój dla czwórki' img={RoomQuadruple} price={330} numPerson={4} />
+          {
+            loading ?
+              <p className='text-red-700 font-medium'>ładowanie...</p>
+            : error ?
+              <p className='text-red-700 font-medium'>{error}</p>
+            : rooms && Array.isArray(rooms) && rooms.length > 0 ?
+              rooms.map((r) => <RoomCard key={r.number} name={`${r.number}: ${r.type}`} price={100} numPerson={r.numberOfPeople} />) 
+            :
+              <p className='text-red-700 font-medium'>nie znaleziono pokojów spełniających warunki</p>
+          }
         </section>
       </main>
   )
