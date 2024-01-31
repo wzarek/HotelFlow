@@ -14,10 +14,9 @@ const RoomSearch = () => {
   dateTo.setDate(dateFrom.getDate() + 2)
 
   return (
-    <>
       <main className='min-h-[80vh] w-[90vw] mx-auto flex flex-wrap justify-evenly items-start pt-[12vh]'>
         <Heading text='znajdź pokój' />
-        <section className='sticky top-[15vh] p-[2em] bg-gradient-to-b from-blue-100 to-blue-200 rounded-2xl w-1/5 h-[70vh] z-10 shadow flex flex-col gap-[3em]'>
+        <aside className='sticky top-[15vh] p-[2em] bg-gradient-to-b from-blue-100 to-blue-200 rounded-2xl w-1/5 h-[70vh] z-10 shadow flex flex-col gap-[3em]'>
           <h3 className='text-[1.5rem] font-medium mb-[2rem] text-center'>filtry</h3>
           <form action="" className='flex flex-col justify-start h-full'>
             <SearchInput name='dateFrom' label='dostępny od' type='date' />
@@ -25,7 +24,7 @@ const RoomSearch = () => {
             <SearchInput name='numPeople' label='ilość osób' type='number' />
             <SubmitInputSecondary classes='mt-auto' name='submit' text='filtruj' />
           </form>
-        </section>
+        </aside>
         <section className='w-2/3 grid grid-cols-3 gap-3'>
           <RoomCard name='pokój dla singla' img={RoomSingle} price={100} numPerson={1} />
           <RoomCard name='pokój dla pary' img={RoomDouble} price={150} numPerson={2} />
@@ -37,7 +36,6 @@ const RoomSearch = () => {
           <RoomCard name='pokój dla czwórki' img={RoomQuadruple} price={330} numPerson={4} />
         </section>
       </main>
-    </>
   )
 }
 

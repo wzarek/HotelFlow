@@ -4,11 +4,11 @@ import { authConstants, getAuthDataFromSessionStorage } from './authorizationSer
 const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
-    const [auth, setAuth] = useState({ isAuthenticated: false, token: null, role: authConstants.guest})
+    const [auth, setAuth] = useState(null)
 
     useEffect(() =>{
         let authData = getAuthDataFromSessionStorage()
-        console.log(authData)
+
         if (authData !== null) {
             setAuth({ isAuthenticated: authData.token !== null, token: authData.token, role: authData.role})
         }else{
