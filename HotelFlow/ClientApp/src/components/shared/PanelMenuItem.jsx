@@ -1,6 +1,6 @@
 import React from 'react'
 
-const ClientPanelMenuItem = ({text, onClick, active}) => {
+const PanelMenuItem = ({text, onClick, active}) => {
   return (
     !active ?
         <p onClick={onClick} className='border-2 border-blue-900 p-[.5rem] rounded-lg cursor-pointer hover:text-blue-600 hover:border-blue-600'>{text}</p>
@@ -9,4 +9,4 @@ const ClientPanelMenuItem = ({text, onClick, active}) => {
   )
 }
 
-export default ClientPanelMenuItem
+export default PanelMenuItem

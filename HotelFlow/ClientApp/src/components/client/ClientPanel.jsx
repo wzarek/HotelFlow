@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Heading from '../shared/Heading'
-import ClientPanelMenuItem from './ClientPanelMenuItem'
+import PanelMenuItem from '../shared/PanelMenuItem'
 import MyReservationsPanel from './MyReservationsPanel'
 import ContactDetailsPanel from './ContactDetailsPanel'
 
@@ -9,7 +9,7 @@ const ClientPanel = () => {
     const [myReservationsActive, setMyReservationsActive] = useState(false)
 
     useEffect(() => {
-        setContactInfoActive(true)
+        handleContactInfoClick()
     }, [])
 
     const handleContactInfoClick = () => {
@@ -28,8 +28,8 @@ const ClientPanel = () => {
             <aside className='sticky top-[15vh] p-[2rem] bg-gradient-to-b from-blue-100 to-blue-200 rounded-2xl w-1/5 h-[70vh] z-10 shadow flex flex-col gap-[3em]'>
                 <h3 className='text-[1.5rem] font-medium mb-[2rem] text-center'>menu</h3>
                 <div className='flex flex-col gap-[1rem]'>
-                    <ClientPanelMenuItem onClick={handleContactInfoClick} text='informacje kontaktowe' active={contactInfoActive} />
-                    <ClientPanelMenuItem onClick={handleMyReservationsClick} text='moje rezerwacje' active={myReservationsActive} />
+                    <PanelMenuItem onClick={handleContactInfoClick} text='informacje kontaktowe' active={contactInfoActive} />
+                    <PanelMenuItem onClick={handleMyReservationsClick} text='moje rezerwacje' active={myReservationsActive} />
                 </div>
             </aside>
             <section className='w-2/3'>

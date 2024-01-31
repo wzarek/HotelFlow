@@ -4,10 +4,11 @@ import Logout from "./components/shared/pages/Logout"
 import Register from "./components/shared/pages/Register"
 import NotFound from "./components/shared/pages/NotFound"
 import RoomSearch from "./components/shared/pages/RoomSearch"
-import UsersListPage from "./components/admin/UsersListPage"
+import AdminPanel from "./components/admin/AdminPanel"
 import { authConstants } from "./services/auth/authorizationServices"
 import { Navigate } from "react-router-dom"
 import ClientPanel from "./components/client/ClientPanel"
+import EmployeePanel from "./components/employee/EmployeePanel"
 
 const AppRoutes = [
   {
@@ -47,10 +48,16 @@ const AppRoutes = [
     element: <ClientPanel />
   },
   {
+    index: 30,
+    path: '/employee/panel',
+    role: authConstants.employee,
+    element: <EmployeePanel />
+  },
+  {
     index: 50,
-    path: '/admin/users-list',
+    path: '/admin/panel',
     role: authConstants.admin,
-    element: <UsersListPage />
+    element: <AdminPanel />
   },
   {
     index: 100,

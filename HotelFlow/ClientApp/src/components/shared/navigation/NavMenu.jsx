@@ -23,6 +23,10 @@ export const NavMenu = () => {
                       auth.isAuthenticated && auth.role === authConstants.client &&
                       <NavItem to="/client/panel" name='panel klienta' />
                     }
+                    {
+                      auth.isAuthenticated && auth.role === authConstants.admin &&
+                      <NavItem to="/admin/panel" name='panel administratora' />
+                    }
                     <div className='w-[1em] h-[1em] border-black border-l-[1px]'></div>
                     {
                       auth.isAuthenticated ?
