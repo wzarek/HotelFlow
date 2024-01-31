@@ -15,6 +15,7 @@ const context =  [
   "/api/users/delete",
   "/api/users/editmultiplebyids",
   "/api/users/getcurrentuserinfo",
+  "/api/users/editcurrentuser",
 
   "/api/reservations",
   "/api/reservations/all",
@@ -35,6 +36,7 @@ const context =  [
 
   "/api/rooms",
   "/api/rooms/all",
+  "/api/rooms/random",
   "/api/rooms/allwithinactive",
   "/api/rooms/getwithoffset",
   "/api/rooms/getroombyid",
