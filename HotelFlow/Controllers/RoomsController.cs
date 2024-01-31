@@ -27,13 +27,6 @@ namespace HotelFlow.Controllers
         }
 
         [HttpGet]
-        [Route("[action]")]
-        public string Dupa()
-        {
-            return "ass";
-        }
-
-        [HttpGet]
         [Authorize(Roles = "Admin,Employee")]
         [Route("[action]")]
         public IActionResult AllWithInactive()
