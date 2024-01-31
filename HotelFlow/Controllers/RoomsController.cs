@@ -78,7 +78,7 @@ namespace HotelFlow.Controllers
 
             var rooms = _roomService.GetRoomsByFilter(r => (getInactive && r.IsActive) && r.StatusId == statusId);
 
-            if (rooms.Any())
+            if (!rooms.Any())
             {
                 return BadRequest();
             }
@@ -97,7 +97,7 @@ namespace HotelFlow.Controllers
 
             var rooms = _roomService.GetRoomsByFilter(r => r.IsActive && types.Contains(r.TypeId));
 
-            if (rooms.Any())
+            if (!rooms.Any())
             {
                 return BadRequest();
             }
@@ -107,29 +107,28 @@ namespace HotelFlow.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Route("[action]")]
-        public IActionResult Edit(Room room)
+        [Route("[action]/{roomId}")]
+        public IActionResult Edit(int roomId, RoomDto room_dto)
         {
-            if (room == null)
+            if (roomId < 1 || room_dto == null)
             {
                 return BadRequest();
             }
 
-            
-            return Ok(_roomService.UpdateRoom(room));
+            return Ok(_roomService.UpdateRoom(roomId, room_dto));
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
-        public IActionResult EditMultiple(IEnumerable<Room> rooms)
+        public IActionResult EditMultiple((IEnumerable<int>, IEnumerable<RoomDto>) zipped)
         {
-            if (rooms == null || !rooms.Any())
+            if (zipped.Item1 == null || !zipped.Item1.Any() || zipped.Item2 == null || !zipped.Item2.Any())
             {
                 return BadRequest();
             }
 
-            _roomService.UpdateRooms(rooms);
+            _roomService.UpdateRooms(zipped.Item1, zipped.Item2);
             return Ok();
         }
 
@@ -178,27 +177,27 @@ namespace HotelFlow.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
-        public IActionResult Add(Room room)
+        public IActionResult Add(RoomDto roomDto)
         {
-            if (room == null)
+            if (roomDto == null)
             {
                 return BadRequest();
             }
 
-            return Ok(_roomService.CreateRoom(room));
+            return Ok(_roomService.CreateRoom(roomDto));
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
-        public IActionResult AddMultiple(IEnumerable<Room> rooms)
+        public IActionResult AddMultiple(IEnumerable<RoomDto> roomsDto)
         {
-            if (rooms == null || !rooms.Any())
+            if (roomsDto == null || !roomsDto.Any())
             {
                 return BadRequest();
             }
 
-            _roomService.CreateRooms(rooms);
+            _roomService.CreateRooms(roomsDto);
             return Ok();
         }
     }

@@ -16,8 +16,14 @@ namespace HotelFlow.Services.DBServices
             _context = context;
         }
 
-        public CleaningSchedule CreateCleaningSchedule(CleaningSchedule cleaningSchedule)
+        public CleaningSchedule CreateCleaningSchedule(CleaningScheduleDto cleaningScheduleDto)
         {
+            var cleaningSchedule = new CleaningSchedule
+            {
+                RoomId = cleaningScheduleDto.RoomId,
+                EmployeeId = cleaningScheduleDto.EmployeeId,
+                DateToBeCleaned = cleaningScheduleDto.DateToBeCleaned
+            };
             _context.CleaningSchedules.Add(cleaningSchedule);
             _context.SaveChanges();
             return cleaningSchedule;
@@ -38,9 +44,16 @@ namespace HotelFlow.Services.DBServices
             return _context.CleaningSchedules.Where(filter).ToList();
         }
 
-        public CleaningSchedule UpdateCleaningSchedule(CleaningSchedule cleaningSchedule)
+        public CleaningSchedule UpdateCleaningSchedule(int id, CleaningScheduleDto cleaningScheduleDto)
         {
-            _context.CleaningSchedules.Update(cleaningSchedule);
+            var cleaningSchedule = _context.CleaningSchedules.Find(id);
+            if (cleaningSchedule == null)
+            {
+                return null;
+            }
+            cleaningSchedule.RoomId = cleaningScheduleDto.RoomId;
+            cleaningSchedule.EmployeeId = cleaningScheduleDto.EmployeeId;
+            cleaningSchedule.DateToBeCleaned = cleaningScheduleDto.DateToBeCleaned;
             _context.SaveChanges();
             return cleaningSchedule;
         }

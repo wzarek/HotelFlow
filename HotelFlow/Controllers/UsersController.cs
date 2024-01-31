@@ -62,7 +62,7 @@ namespace HotelFlow.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        [Route("[action]")]
+        [Route("[action]/{roleId}")]
         public IActionResult GetByRole(int roleId)
         {
             if (roleId < 1 || roleId > 4)
@@ -92,7 +92,7 @@ namespace HotelFlow.Controllers
             return Ok(_userService.UpdateUser(id, userDto));
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
         public IActionResult EditMultiple(IEnumerable<User> users)
@@ -106,7 +106,7 @@ namespace HotelFlow.Controllers
             return Ok();
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
         public IActionResult Delete(User user)
@@ -134,7 +134,7 @@ namespace HotelFlow.Controllers
             return Ok();
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
         public IActionResult DeleteMultipleByIds(IEnumerable<int> ids)
