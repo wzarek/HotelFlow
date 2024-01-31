@@ -4,6 +4,7 @@ using HotelFlow.Services;
 using HotelFlow.Services.DBServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using static HotelFlow.Helpers.Constants;
 
 namespace HotelFlow.Controllers
@@ -132,6 +133,30 @@ namespace HotelFlow.Controllers
             }
 
             return Ok(reservation);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "User")]
+        [Route("[action]")]
+        public IActionResult GetCurrentUserReservations()
+        {
+            string userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+
+            if (userIdString == string.Empty)
+            {
+                return BadRequest();
+            }
+
+            int userId = int.Parse(userIdString);
+
+            var reviews = _reservationService.GetReservationsByFilter(r => r.CustomerId == userId).ToList();
+
+            if (reviews == null || !reviews.Any())
+            {
+                return Ok(new List<Review>());
+            }
+
+            return Ok(reviews);
         }
     }
 }
