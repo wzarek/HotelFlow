@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace HotelFlow.Models.DTO
 {
-    public class ReservationDataDto
+    public class ReservationDto
     {
         public int RoomId { get; set; }
         public int CustomerId { get; set; }

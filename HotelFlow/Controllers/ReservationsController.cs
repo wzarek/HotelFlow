@@ -70,7 +70,7 @@ namespace HotelFlow.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
-        public IActionResult Edit(int id, ReservationDataDto reservationDto)
+        public IActionResult Edit(int id, ReservationDto reservationDto)
         {
             if (id < 1 || reservationDto == null)
             {
@@ -100,7 +100,7 @@ namespace HotelFlow.Controllers
         [HttpPost]
         [Authorize(Roles = "User,Employee,Admin")]
         [Route("[action]")]
-        public IActionResult Add(ReservationDataDto reservationDto)
+        public IActionResult Add(ReservationDto reservationDto)
         {
             if (reservationDto == null)
             {

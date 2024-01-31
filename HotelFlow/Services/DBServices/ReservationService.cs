@@ -16,7 +16,7 @@ namespace HotelFlow.Services.DBServices
             _context = context;
         }
 
-        public Reservation CreateReservation(ReservationDataDto reservationDto)
+        public Reservation CreateReservation(ReservationDto reservationDto)
         {
             var reservation = new Reservation
             {
@@ -53,7 +53,7 @@ namespace HotelFlow.Services.DBServices
             return _context.Reservations.Where(filter).ToList();
         }
 
-        public Reservation UpdateReservation(int id, ReservationDataDto reservationDto)
+        public Reservation UpdateReservation(int id, ReservationDto reservationDto)
         {
             var reservation = _context.Reservations.FirstOrDefault(r => r.Id == id);
             if(reservation == null)
