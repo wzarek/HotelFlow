@@ -11,8 +11,19 @@ namespace HotelFlow.Models.DTO
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
         public int StatusId { get; set; }
-
     }
+
+    public class ReservationDataToSend
+    {
+        public int Id { get; set; }
+        public string ReservationNumber { get; set; }
+        public int RoomId { get; set; }
+        public string DateFrom { get; set; }
+        public string DateTo { get; set; }
+        public string Status { get; set; }
+        public string DateCreated { get; set; }
+    }
+
     public partial class Reservation
     {
         public Reservation()

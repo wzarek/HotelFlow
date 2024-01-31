@@ -1,7 +1,7 @@
 import React from 'react'
 import { reservationStatuses } from '../../models/reservation/reservationHelpers'
 
-const ReservationListItem = ({dateFrom, dateTo, number, status}) => {
+const ReservationListItem = ({dateFrom, dateTo, number, status, onClick}) => {
     let statusClass = ''
     let statusTxtClass = ''
     
@@ -31,11 +31,11 @@ const ReservationListItem = ({dateFrom, dateTo, number, status}) => {
             statusTxtClass = 'text-grey-600'
     }
 
-    let classes = `flex justify-between items-center border-2 rounded-xl p-[1rem] shadow ${statusClass}`
+    let classes = `flex justify-between items-center border-2 rounded-xl p-[.75rem] cursor-pointer ${statusClass} hover:bg-blue-100`
     let statusTextClasases = `font-medium ${statusTxtClass}`
 
   return (
-    <div className='flex flex-col mb-[2rem]'>
+    <div onClick={onClick} className='flex flex-col mb-[2rem]'>
         <div className={classes} >
             <h4 className='font-medium'>Rezerwacja nr {number}</h4>
             <div className='flex flex-col items-end'>
