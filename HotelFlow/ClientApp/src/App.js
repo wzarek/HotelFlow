@@ -5,6 +5,7 @@ import { AuthProvider } from './services/auth/AuthProvider'
 import './custom.css'
 
 const App = () => {
+
     return (
       <AuthProvider>
         <Layout>

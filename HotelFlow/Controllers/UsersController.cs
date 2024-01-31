@@ -3,6 +3,7 @@ using HotelFlow.Models.DTO;
 using HotelFlow.Services.DBServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using static HotelFlow.Helpers.Constants;
 
 namespace HotelFlow.Controllers
@@ -145,6 +146,29 @@ namespace HotelFlow.Controllers
 
             _userService.DeleteUsers(ids);
             return Ok();
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "User,Employee,Admin")]
+        [Route("[action]")]
+        public IActionResult GetCurrentUserInfo()
+        {
+            string userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+
+            if (userIdString == string.Empty)
+            {
+                return BadRequest();
+            }
+
+            int userId = int.Parse(userIdString);
+            var currentUser = _userService.GetUserById(userId);
+
+            if (currentUser == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(currentUser);
         }
     }
 }

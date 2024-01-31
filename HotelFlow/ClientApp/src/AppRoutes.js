@@ -7,6 +7,7 @@ import RoomSearch from "./components/shared/pages/RoomSearch"
 import UsersListPage from "./components/admin/UsersListPage"
 import { authConstants } from "./services/auth/authorizationServices"
 import { Navigate } from "react-router-dom"
+import ClientPanel from "./components/client/ClientPanel"
 
 const AppRoutes = [
   {
@@ -40,7 +41,13 @@ const AppRoutes = [
     element: <RoomSearch />
   },
   {
-    index: 5,
+    index: 10,
+    path: '/client/panel',
+    role: authConstants.client,
+    element: <ClientPanel />
+  },
+  {
+    index: 50,
     path: '/admin/users-list',
     role: authConstants.admin,
     element: <UsersListPage />

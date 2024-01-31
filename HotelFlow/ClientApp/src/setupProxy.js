@@ -14,6 +14,7 @@ const context =  [
   "api/users/editmultiple",
   "api/users/delete",
   "api/users/editmultiplebyids",
+  "/api/users/getcurrentuserinfo",
 
   "api/reservations",
   "api/reservations/all",

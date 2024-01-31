@@ -14,7 +14,7 @@ const Register = () => {
     if (auth && auth.isAuthenticated){
       setRedirect(true)
     }
-  }, [])
+  }, [auth])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
