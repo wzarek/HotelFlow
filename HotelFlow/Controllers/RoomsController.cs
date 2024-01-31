@@ -4,6 +4,7 @@ using HotelFlow.Services;
 using HotelFlow.Services.DBServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using static HotelFlow.Helpers.Constants;
 
 namespace HotelFlow.Controllers
@@ -20,10 +21,53 @@ namespace HotelFlow.Controllers
         }
 
         [HttpGet]
+        [Route("[action]/{num}")]
+        public IActionResult Random(int num)
+        {
+            var rooms = _roomService.GetAllRooms();
+            var roomsToSend = new List<RoomDataToSend>();
+
+            foreach (var room in rooms)
+            {
+                roomsToSend.Add(
+                    new RoomDataToSend
+                    {
+                        Id = room.Id,
+                        Number = room.Number,
+                        Type = room.Type.Name,
+                        Status = room.Status.Name,
+                        IsActive = room.IsActive
+                    }    
+                );
+            }
+
+            roomsToSend = roomsToSend.OrderBy(x => Guid.NewGuid()).Take(num).ToList();
+
+            return Ok(roomsToSend);
+        }
+
+        [HttpGet]
         [Route("[action]")]
         public IActionResult All()
         {
-            return Ok(_roomService.GetAllRooms());
+            var rooms = _roomService.GetAllRooms();
+            var roomsToSend = new List<RoomDataToSend>();
+
+            foreach (var room in rooms)
+            {
+                roomsToSend.Add(
+                    new RoomDataToSend
+                    {
+                        Id = room.Id,
+                        Number = room.Number,
+                        Type = room.Type.Name,
+                        Status = room.Status.Name,
+                        IsActive = room.IsActive
+                    }
+                );
+            }
+
+            return Ok(roomsToSend);
         }
 
         [HttpGet]
@@ -47,7 +91,7 @@ namespace HotelFlow.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin,Employee")]
+        [Authorize(Roles = "Admin,Employee,User")]
         [Route("{id}")]
         public IActionResult GetRoomById(int id)
         {
@@ -63,7 +107,16 @@ namespace HotelFlow.Controllers
                 return BadRequest();
             }
 
-            return Ok(room);
+            var roomToSend = new RoomDataToSend
+            {
+                Id = room.Id,
+                Number = room.Number,
+                Type = room.Type.Name,
+                Status = room.Status.Name,
+                IsActive = room.IsActive
+            };
+
+            return Ok(roomToSend);
         }
 
         [HttpGet]
