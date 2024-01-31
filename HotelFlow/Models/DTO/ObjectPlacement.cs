@@ -3,7 +3,16 @@ using System.Collections.Generic;
 
 namespace HotelFlow.Models.DTO
 {
-    public partial class ObjectPlacement
+    public class ObjectPlacementDto
+    {
+        public int ObjectTypeId { get; set; }
+        public int FloorNumberId { get; set; }
+        public string PositionFrom { get; set; } = null!;
+        public string PositionTo { get; set; } = null!;
+        public int? RoomId { get; set; }
+    }
+
+        public partial class ObjectPlacement
     {
         public int Id { get; set; }
         public int ObjectTypeId { get; set; }

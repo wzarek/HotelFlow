@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Numerics;
 using HotelFlow.Helpers;
 using HotelFlow.Models.DTO;
 using Microsoft.EntityFrameworkCore;
+using static HotelFlow.Helpers.Constants;
 
 namespace HotelFlow.Services.DBServices
 {
@@ -42,13 +44,21 @@ namespace HotelFlow.Services.DBServices
             return room;
         }
 
-        public void CreateRooms(IEnumerable<Room> rooms)
+        public void CreateRooms(IEnumerable<RoomDto> roomsDto)
         {
-            foreach (Room room in rooms)
+            foreach (RoomDto roomDto in roomsDto)
             {
+                var room = new Room
+                {
+                    Number = roomDto.Number,
+                    TypeId = roomDto.TypeId,
+                    StatusId = roomDto.StatusId,
+                    IsActive = roomDto.IsActive,
+                    DateCreated = DateTime.Now
+                };
                 _context.Rooms.AddIfNotExists(room, r => r.Number == room.Number);
-                _context.SaveChanges();
             }
+            _context.SaveChanges();
         }
 
         public IEnumerable<Room> GetAllRooms(bool getInactiveRooms = false)
@@ -86,9 +96,22 @@ namespace HotelFlow.Services.DBServices
             return room;
         }
 
-        public void UpdateRooms(IEnumerable<Room> rooms)
+        public void UpdateRooms(IEnumerable<int> ids, IEnumerable<RoomDto> roomsDto)
         {
-            _context.Rooms.UpdateRange(rooms);
+            var zipped = ids.Zip(roomsDto);
+            foreach (var roomDto in zipped)
+            {
+                var room = _context.Rooms.Find(roomDto.First);
+                if (room == null)
+                {
+                    continue;
+                }
+                room.Number = roomDto.Second.Number;
+                room.TypeId = roomDto.Second.TypeId;
+                room.StatusId = roomDto.Second.StatusId;
+                room.IsActive = roomDto.Second.IsActive;
+
+            }
             _context.SaveChanges();
         }
 

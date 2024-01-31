@@ -3,7 +3,14 @@ using System.Collections.Generic;
 
 namespace HotelFlow.Models.DTO
 {
-    public partial class FloorSchema
+    public class FloorSchemaDto
+    {
+        public int FloorNumber { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
+
+    }
+        public partial class FloorSchema
     {
         public FloorSchema()
         {

@@ -3,6 +3,16 @@ using System.Collections.Generic;
 
 namespace HotelFlow.Models.DTO
 {
+    public class ReservationDataDto
+    {
+        public int RoomId { get; set; }
+        public int CustomerId { get; set; }
+        public int EmployeeId { get; set; }
+        public DateTime DateFrom { get; set; }
+        public DateTime DateTo { get; set; }
+        public int StatusId { get; set; }
+
+    }
     public partial class Reservation
     {
         public Reservation()

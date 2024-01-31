@@ -55,29 +55,29 @@ namespace HotelFlow.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
-        public IActionResult AddFloor(FloorSchema floorSchema)
+        public IActionResult AddFloor(FloorSchemaDto floorSchemaDto)
         {
-            if (floorSchema == null)
+            if (floorSchemaDto == null)
             {
                 return BadRequest();
             }
 
-            _floorSchemaService.UpdateFloorSchema(floorSchema);
+            _floorSchemaService.CreateFloorSchema(floorSchemaDto);
 
             return Ok();
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Route("[action]")]
-        public IActionResult EditFloor(FloorSchema floorSchema)
+        [Route("[action]/{id}")]
+        public IActionResult EditFloor(int id, FloorSchemaDto floorSchemaDto)
         {
-            if (floorSchema == null)
+            if (floorSchemaDto == null)
             {
                 return BadRequest();
             }
 
-            _floorSchemaService.UpdateFloorSchema(floorSchema);
+            _floorSchemaService.UpdateFloorSchema(id, floorSchemaDto);
 
             return Ok();
         }
@@ -99,15 +99,15 @@ namespace HotelFlow.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Route("[action]")]
-        public IActionResult EditObjectPlacement(ObjectPlacement objectPlacement)
+        [Route("[action]/{id}")]
+        public IActionResult EditObjectPlacement(int id, ObjectPlacementDto objectPlacementDto)
         {
-            if (objectPlacement == null)
+            if (objectPlacementDto == null)
             {
                 return BadRequest();
             }
 
-            _objectPlacementService.UpdateObjectPlacement(objectPlacement);
+            _objectPlacementService.UpdateObjectPlacement(id, objectPlacementDto);
 
             return Ok();
         }
@@ -130,14 +130,14 @@ namespace HotelFlow.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
-        public IActionResult AddObjectPlacement(ObjectPlacement objectPlacement)
+        public IActionResult AddObjectPlacement(ObjectPlacementDto objectPlacementDto)
         {
-            if (objectPlacement == null)
+            if (objectPlacementDto == null)
             {
                 return BadRequest();
             }
 
-            _objectPlacementService.CreateObjectPlacement(objectPlacement);
+            _objectPlacementService.CreateObjectPlacement(objectPlacementDto);
 
             return Ok();
         }

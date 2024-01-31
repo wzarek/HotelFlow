@@ -121,14 +121,14 @@ namespace HotelFlow.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
-        public IActionResult EditMultiple(IEnumerable<Room> rooms)
+        public IActionResult EditMultiple((IEnumerable<int>, IEnumerable<RoomDto>) zipped)
         {
-            if (rooms == null || !rooms.Any())
+            if (zipped.Item1 == null || !zipped.Item1.Any() || zipped.Item2 == null || !zipped.Item2.Any())
             {
                 return BadRequest();
             }
 
-            _roomService.UpdateRooms(rooms);
+            _roomService.UpdateRooms(zipped.Item1, zipped.Item2);
             return Ok();
         }
 
@@ -190,14 +190,14 @@ namespace HotelFlow.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
-        public IActionResult AddMultiple(IEnumerable<Room> rooms)
+        public IActionResult AddMultiple(IEnumerable<RoomDto> roomsDto)
         {
-            if (rooms == null || !rooms.Any())
+            if (roomsDto == null || !roomsDto.Any())
             {
                 return BadRequest();
             }
 
-            _roomService.CreateRooms(rooms);
+            _roomService.CreateRooms(roomsDto);
             return Ok();
         }
     }
