@@ -1,8 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { URL_BASE, fetchGETJSONData, fetchPOSTJSONData} from '../../services/databaseServices'
-import { ContactDetailsToGet } from '../../models/user/ContactDetails'
-import { Roles } from '../../models/user/Roles'
-import { UserModelToSend } from '../../models/user/UserModel'
+import { ContactDetailsToGet, ContactDetailsToSend } from '../../models/user/ContactDetails'
   
 const EmployeeManagment = () => {
     const [error, setError] = useState('')
@@ -15,11 +13,12 @@ const EmployeeManagment = () => {
         Surname: '',
         EmailAddress: '',
         PhoneNumber: '',
-        RoleId: ''
+        RoleId: '',
+        IsActive: true,
       });
     const fetchData = async () => {
         try {
-            let JSONdata = await fetchGETJSONData(`${URL_BASE}/users/getbyrole/3`)
+            let JSONdata = await fetchGETJSONData(`${URL_BASE}/users/all`)
             let usersData = ContactDetailsToGet.fromJSONList(JSON.stringify(JSONdata.users))
 
             setUsers(usersData)
@@ -47,9 +46,9 @@ const EmployeeManagment = () => {
 
       const handleSubmit = async (e) => {
         e.preventDefault()
-        let userModel = new UserModelToSend(formData.UserName, formData.Name, formData.Surname, formData.EmailAddress, formData.PhoneNumber, formData.RoleId)
+        let userModel = new ContactDetailsToSend(formData.UserName, formData.EmailAddress, formData.PhoneNumber, formData.Name, formData.Surname, formData.RoleId, formData.IsActive)
         try{
-            console.log(currentUserData)
+            console.log(userModel)
             let userJSONdata = await fetchPOSTJSONData(`${URL_BASE}/users/edit/${currentUserData.Id}`, JSON.stringify(userModel))
 
             console.log(userJSONdata)

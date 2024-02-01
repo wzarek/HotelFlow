@@ -1,26 +1,13 @@
-export class ContactDetailsToGet {
-    constructor(username, email, number, name, surname) {
-        this.Email = email
-        this.UserName = username
-        this.Name = name
-        this.Surname = surname
-        this.PhoneNumber = number
-    }
-
-    static fromJSON(json) {
-        var parsedJSON = JSON.parse(json)
-        return new ContactDetailsToGet(parsedJSON.userName, parsedJSON.emailAddress, parsedJSON.phoneNumber, parsedJSON.name, parsedJSON.surname)
-    }
-
+export class Roles {
     static fromJSONList(json) {
         let parsedJSON = JSON.parse(json)
-        let usersArray = []
+        let roles = []
 
         parsedJSON.forEach(element => {
             usersArray.push(
-                new ContactDetailsToGet(element.userName, element.emailAddress, element.phoneNumber, element.name, element.surname)
+                element
             )
         });
-        return usersArray
+        return roles
     }
 }

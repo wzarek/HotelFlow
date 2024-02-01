@@ -3,6 +3,7 @@ import Heading from '../shared/Heading'
 import PanelMenuItem from '../shared/PanelMenuItem'
 import FloorGrid from './FloorGrid'
 import EmployeeManagment from './EmployeeManagment'
+import CleaningManagment from './CleaningManagment'
 
 const AdminPanel = () => {
     const [roomsManagementActive, setRoomsManagementActive] = useState(false)
@@ -74,7 +75,7 @@ const AdminPanel = () => {
                         roomsManagementActive ? 
                             <FloorGrid/>
                         : cleaningManagementActive ?
-                            <div> fgfgfg</div>
+                            <CleaningManagment/>
                         : reservationsManagementActive ?
                             <div> </div>
                         : clientsManagementActive ?
