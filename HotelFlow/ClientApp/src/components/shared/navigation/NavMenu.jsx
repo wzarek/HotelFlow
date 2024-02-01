@@ -24,6 +24,10 @@ export const NavMenu = () => {
                       <NavItem to="/client/panel" name='panel klienta' />
                     }
                     {
+                      auth.isAuthenticated && auth.role === authConstants.employee &&
+                      <NavItem to="/employee/panel" name='panel pracownika' />
+                    }
+                    {
                       auth.isAuthenticated && auth.role === authConstants.admin &&
                       <NavItem to="/admin/panel" name='panel administratora' />
                     }

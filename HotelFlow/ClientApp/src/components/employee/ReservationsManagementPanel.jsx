@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import ReservationListItem from './ReservationListItem'
+import ReservationManagementListItem from './ReservationManagementListItem'
 import { ReservationToGet, reservationStatuses } from '../../models/reservation/reservationHelpers'
 import { URL_BASE, fetchGETJSONData } from '../../services/databaseServices'
-import ReservationDetails from './ReservationDetails'
+import ReservationManagementDetails from './ReservationManagementDetails'
 
-const MyReservationsPanel = () => {
+const ReservationsManagementPanel = () => {
     const [error, setError] = useState('')
     const [currentReservations, setCurrentReservations] = useState([])
     const [incomingReservations, setIncomingReservations] = useState([])
@@ -15,7 +15,7 @@ const MyReservationsPanel = () => {
 
     const fetchData = async () => {
         try {
-            let JSONdata = await fetchGETJSONData(`${URL_BASE}/reservations/getcurrentuserreservations`)
+            let JSONdata = await fetchGETJSONData(`${URL_BASE}/reservations/all`)
             let reservationsData = ReservationToGet.fromJSONList(JSON.stringify(JSONdata))
             
             sortReservations(reservationsData)
@@ -58,21 +58,21 @@ const MyReservationsPanel = () => {
 
     return (
         <>
-            <h2 className='font-medium pb-[3rem] text-[1.5rem]'>moje rezerwacje</h2>
+            <h2 className='font-medium pb-[3rem] text-[1.5rem]'>rezerwacje</h2>
             {
                 error ?
                     <p className='text-red-700 mt-[2rem] font-medium'>{error}</p>
                 : zeroReservations ? 
                     <p>brak rezerwacji</p>
                 : reservationDetailsShown ?
-                    <ReservationDetails goBack={() => hideReservationDetails()} reservation={clickedReservation} />
+                    <ReservationManagementDetails goBack={() => hideReservationDetails()} reservation={clickedReservation} />
                 : <>
                     {Array.isArray(currentReservations) && currentReservations.length > 0 && 
                         <>
                             <h3 className='font-medium text-[1.1rem] pb-[1rem]'>obecne</h3>
                             {
                                 currentReservations.map(
-                                    res => <ReservationListItem key={res.number} onClick={() => showReservationDetails(res)} number={res.number} dateFrom={res.dateFrom} dateTo={res.dateTo} status={res.status} />
+                                    res => <ReservationManagementListItem key={res.number} onClick={() => showReservationDetails(res)} number={res.number} dateFrom={res.dateFrom} dateTo={res.dateTo} status={res.status} />
                                 )
                             }
                         </>
@@ -82,7 +82,7 @@ const MyReservationsPanel = () => {
                             <h3 className='font-medium text-[1.1rem] pb-[1rem]'>nadchodzące</h3>
                             {
                                 incomingReservations.map(
-                                    res => <ReservationListItem key={res.number} onClick={() => showReservationDetails(res)} number={res.number} dateFrom={res.dateFrom} dateTo={res.dateTo} status={res.status} />
+                                    res => <ReservationManagementListItem key={res.number} onClick={() => showReservationDetails(res)} number={res.number} dateFrom={res.dateFrom} dateTo={res.dateTo} status={res.status} />
                                 )    
                             }
                         </>
@@ -92,7 +92,7 @@ const MyReservationsPanel = () => {
                             <h3 className='font-medium text-[1.1rem] pb-[0.5rem]'>stare</h3>
                             {
                                 oldReservations.map(
-                                    res => <ReservationListItem key={res.number} onClick={() => showReservationDetails(res)} number={res.number} dateFrom={res.dateFrom} dateTo={res.dateTo} status={res.status} />
+                                    res => <ReservationManagementListItem key={res.number} onClick={() => showReservationDetails(res)} number={res.number} dateFrom={res.dateFrom} dateTo={res.dateTo} status={res.status} />
                                 )
                             }
                         </>
@@ -104,4 +104,4 @@ const MyReservationsPanel = () => {
     )
 }
 
-export default MyReservationsPanel
+export default ReservationsManagementPanel

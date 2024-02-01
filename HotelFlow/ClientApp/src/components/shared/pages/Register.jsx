@@ -47,7 +47,7 @@ const Register = () => {
 
       document.forms[0].reset()
 
-      setInterval(() => {
+      setTimeout(() => {
         setRedirect(true)
       }, 2000)
     }catch(err){

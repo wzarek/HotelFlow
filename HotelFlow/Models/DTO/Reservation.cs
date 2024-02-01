@@ -11,6 +11,7 @@ namespace HotelFlow.Models.DTO
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
         public int StatusId { get; set; }
+        public int TotalPrice { get; set; }
     }
 
     public class ReservationFromFrontend
@@ -32,6 +33,7 @@ namespace HotelFlow.Models.DTO
         public string DateTo { get; set; }
         public string Status { get; set; }
         public string DateCreated { get; set; }
+        public int TotalPrice { get; set; }
     }
 
     public partial class Reservation
@@ -49,6 +51,7 @@ namespace HotelFlow.Models.DTO
         public DateTime DateTo { get; set; }
         public int StatusId { get; set; }
         public DateTime DateCreated { get; set; }
+        public int TotalPrice { get; set; }
 
         public virtual User Customer { get; set; } = null!;
         public virtual User Employee { get; set; } = null!;

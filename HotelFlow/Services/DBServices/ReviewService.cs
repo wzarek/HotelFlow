@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using HotelFlow.Helpers;
 using HotelFlow.Models.DTO;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,9 +17,17 @@ namespace HotelFlow.Services.DBServices
             _context = context;
         }
 
-        public Review CreateReview(Review review)
+        public Review CreateReview(ReviewDto reviewDto)
         {
-            _context.Reviews.Add(review);
+            var review = new Review
+            {
+                Comment = reviewDto.Comment,
+                Rating = reviewDto.Rating,
+                ReservationId = reviewDto.ReservationId,
+                DateCreated = DateTime.Now
+            };
+
+            _context.Reviews.AddIfNotExists(review, r => r.ReservationId == reviewDto.ReservationId);
             _context.SaveChanges();
             return review;
         }

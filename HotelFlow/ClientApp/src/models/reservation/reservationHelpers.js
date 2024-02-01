@@ -6,7 +6,7 @@ export const reservationStatuses = { toConfirm: 'do zatwierdzenia',
 }
 
 export class ReservationToGet {
-    constructor(id, reservationNumber, roomId, dateFrom, dateTo, status, dateCreated) {
+    constructor(id, reservationNumber, roomId, dateFrom, dateTo, status, dateCreated, price) {
         this.id = id
         this.number = reservationNumber
         this.roomId = roomId
@@ -14,6 +14,7 @@ export class ReservationToGet {
         this.dateTo = dateTo
         this.status = status
         this.dateCreated = dateCreated
+        this.totalPrice = price
     }
 
     static fromJSONList(json) {
@@ -22,7 +23,7 @@ export class ReservationToGet {
 
         parsedJSON.forEach(element => {
             reservationsArray.push(
-                new ReservationToGet(element.id, element.reservationNumber, element.roomId, element.dateFrom, element.dateTo, element.status, element.dateCreated)
+                new ReservationToGet(element.id, element.reservationNumber, element.roomId, element.dateFrom, element.dateTo, element.status, element.dateCreated, element.totalPrice)
             )
         });
         return reservationsArray
@@ -31,7 +32,7 @@ export class ReservationToGet {
     static fromJSON(json) {
         let parsedJSON = JSON.parse(json)
 
-        return new ReservationToGet(parsedJSON.id, parsedJSON.reservationNumber, parsedJSON.roomId, parsedJSON.dateFrom, parsedJSON.dateTo, parsedJSON.status, parsedJSON.dateCreated)
+        return new ReservationToGet(parsedJSON.id, parsedJSON.reservationNumber, parsedJSON.roomId, parsedJSON.dateFrom, parsedJSON.dateTo, parsedJSON.status, parsedJSON.dateCreated, parsedJSON.totalPrice)
     }
 }
 
