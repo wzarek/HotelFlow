@@ -48,6 +48,8 @@ const MyReservationsPanel = () => {
     const hideReservationDetails = () => {
         setReservationDetailsShown(false)
         setClickedReservation(null)
+
+        fetchData()
     }
 
     useEffect(() => {

@@ -23,6 +23,7 @@ const context =  [
   "/api/reservations/getwithoffset",
   "/api/reservations/edit",
   "/api/reservations/editstatus",
+  "/api/reservations/cancel",
   "/api/reservations/add",
   "/api/reservations/getreservationforreview",
   "/api/reservations/getcurrentuserreservations",

@@ -37,7 +37,8 @@ namespace HotelFlow.Controllers
                         Type = room.Type.Name,
                         NumberOfPeople = room.Type.NumberOfPeople,
                         Status = room.Status.Name,
-                        IsActive = room.IsActive
+                        IsActive = room.IsActive,
+                        Price = room.Price
                     }    
                 );
             }
@@ -64,7 +65,8 @@ namespace HotelFlow.Controllers
                         Type = room.Type.Name,
                         Status = room.Status.Name,
                         NumberOfPeople = room.Type.NumberOfPeople,
-                        IsActive = room.IsActive
+                        IsActive = room.IsActive,
+                        Price = room.Price
                     }
                 );
             }
@@ -98,8 +100,9 @@ namespace HotelFlow.Controllers
 
             var rooms = _roomService.GetRoomsByFilter(
                 room => (!room.Reservations.Any(
-                    res => (res.DateFrom <= dateFromD && res.DateTo > dateFromD) 
-                            || (res.DateFrom < dateToD && res.DateTo > dateToD) 
+                    res => ((res.DateFrom <= dateFromD && res.DateTo > dateFromD) 
+                            || (res.DateFrom < dateToD && res.DateTo > dateToD))
+                        && res.StatusId != (int)ReservationStatuses.Closed
                 ) &&
                     (filter.numberOfPeople == 0 || room.Type.NumberOfPeople >= filter.numberOfPeople)
                 )
@@ -116,7 +119,8 @@ namespace HotelFlow.Controllers
                         Type = room.Type.Name,
                         Status = room.Status.Name,
                         NumberOfPeople = room.Type.NumberOfPeople,
-                        IsActive = room.IsActive
+                        IsActive = room.IsActive,
+                        Price = room.Price
                     }
                 );
             }
@@ -168,7 +172,8 @@ namespace HotelFlow.Controllers
                 Type = room.Type.Name,
                 Status = room.Status.Name,
                 NumberOfPeople = room.Type.NumberOfPeople,
-                IsActive = room.IsActive
+                IsActive = room.IsActive,
+                Price = room.Price
             };
 
             return Ok(roomToSend);
@@ -198,7 +203,8 @@ namespace HotelFlow.Controllers
                 Type = room.Type.Name,
                 Status = room.Status.Name,
                 NumberOfPeople = room.Type.NumberOfPeople,
-                IsActive = room.IsActive
+                IsActive = room.IsActive,
+                Price = room.Price
             };
 
             return Ok(roomToSend);

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Heading from '../shared/Heading'
 import PanelMenuItem from '../shared/PanelMenuItem'
+import ContactDetailsPanel from '../client/ContactDetailsPanel'
 
 const EmployeePanel = () => {
     const [roomsManagementActive, setRoomsManagementActive] = useState(false)
@@ -78,7 +79,7 @@ const EmployeePanel = () => {
                         : clientsManagementActive ?
                             <div> </div>
                         : myAccountManagementActive ?
-                            <div> </div>
+                            <ContactDetailsPanel />
                         : <div>Wybierz jedną z opcji</div>
                     }
                 </div>

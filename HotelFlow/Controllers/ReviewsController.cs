@@ -39,7 +39,7 @@ namespace HotelFlow.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin,Employee")]
+        [Authorize(Roles = "Admin,Employee,User")]
         [Route("[action]/{reservationId}")]
         public IActionResult GetReviewForReservation(int reservationId)
         {
@@ -52,7 +52,7 @@ namespace HotelFlow.Controllers
 
             if (review == null)
             {
-                return BadRequest();
+                return Ok(new { });
             }
 
             return Ok(review); 
@@ -61,14 +61,14 @@ namespace HotelFlow.Controllers
         [HttpPost]
         [Authorize(Roles = "User")]
         [Route("[action]")]
-        public IActionResult Add(Review review)
+        public IActionResult Add(ReviewDto reviewDto)
         {
-            if (review == null)
+            if (reviewDto == null)
             {
                 return BadRequest();
             }
 
-            return Ok(_reviewService.CreateReview(review)); 
+            return Ok(_reviewService.CreateReview(reviewDto)); 
         }
 
         [HttpPost]

@@ -18,14 +18,16 @@ namespace HotelFlow.Controllers
         private ReservationService _reservationService { get; set; }
         private ReservationStatusService _reservationStatusService { get; set; }
         private ReviewService _reviewService { get; set; }
+        private RoomService _roomService { get; set; }
         private UserService _userService { get; set; }
 
-        public ReservationsController(ReservationService reservationService, ReservationStatusService reservationStatusService, ReviewService reviewService, UserService userService)
+        public ReservationsController(ReservationService reservationService, ReservationStatusService reservationStatusService, ReviewService reviewService, UserService userService, RoomService roomService)
         {
             _reservationService = reservationService;
             _reservationStatusService = reservationStatusService;
             _reviewService = reviewService;
             _userService = userService;
+            _roomService = roomService;
         }
 
         [HttpGet]
@@ -94,9 +96,62 @@ namespace HotelFlow.Controllers
                 return BadRequest();
             }
 
-            _reservationService.EditStatus(reservationId, statusId);
+            var reservationData = _reservationService.EditStatus(reservationId, statusId);
 
-            return Ok();
+            var reservationToSend = new ReservationDataToSend
+            {
+                Id = reservationData.Id,
+                ReservationNumber = $"{reservationData.Id}{reservationData.RoomId}",
+                RoomId = reservationData.RoomId,
+                DateFrom = reservationData.DateFrom.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture),
+                DateTo = reservationData.DateTo.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture),
+                Status = ((ReservationStatuses)reservationData.StatusId).GetDescription(),
+                DateCreated = reservationData.DateCreated.ToString("dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture)
+            };
+
+            return Ok(reservationToSend);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "User")]
+        [Route("[action]/{reservationId}")]
+        public IActionResult Cancel(int reservationId)
+        {
+            if (reservationId < 1)
+            {
+                return BadRequest();
+            }
+
+            string userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+
+            if (userIdString == string.Empty)
+            {
+                return BadRequest();
+            }
+
+            int userId = int.Parse(userIdString);
+
+            var reservationCheck = _reservationService.GetReservationsByFilter(r => r.Id == reservationId && r.CustomerId == userId).ToList();
+
+            if (!reservationCheck.Any())
+            {
+                return BadRequest();
+            }
+
+            var reservationData = _reservationService.EditStatus(reservationId, (int)ReservationStatuses.Closed);
+
+            var reservationToSend = new ReservationDataToSend
+            {
+                Id = reservationData.Id,
+                ReservationNumber = $"{reservationData.Id}{reservationData.RoomId}",
+                RoomId = reservationData.RoomId,
+                DateFrom = reservationData.DateFrom.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture),
+                DateTo = reservationData.DateTo.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture),
+                Status = ((ReservationStatuses)reservationData.StatusId).GetDescription(),
+                DateCreated = reservationData.DateCreated.ToString("dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture)
+            };
+
+            return Ok(reservationToSend);
         }
 
         [HttpPost]
@@ -118,6 +173,13 @@ namespace HotelFlow.Controllers
 
             int userId = int.Parse(userIdString);
 
+            var room = _roomService.GetRoomById(reservationFromFrontend.RoomId);
+
+            if (room == null)
+            {
+                return BadRequest();
+            }
+
             var reservationDto = new ReservationDto
             {
                 CustomerId = reservationFromFrontend.CustomerId,
@@ -125,8 +187,21 @@ namespace HotelFlow.Controllers
                 StatusId = reservationFromFrontend.StatusId,
                 RoomId = reservationFromFrontend.RoomId,
                 DateFrom = DateTime.ParseExact(reservationFromFrontend.DateFrom, "yyyy-MM-dd", CultureInfo.InvariantCulture),
-                DateTo = DateTime.ParseExact(reservationFromFrontend.DateTo, "yyyy-MM-dd", CultureInfo.InvariantCulture)
+                DateTo = DateTime.ParseExact(reservationFromFrontend.DateTo, "yyyy-MM-dd", CultureInfo.InvariantCulture),
+                TotalPrice = room.Price
             };
+
+            var reservationCheck = _reservationService.GetReservationsByFilter(
+                    res => (res.RoomId == reservationDto.RoomId)
+                    && (res.DateFrom <= reservationDto.DateFrom && res.DateTo > reservationDto.DateFrom)
+                            || (res.DateFrom < reservationDto.DateTo && res.DateTo > reservationDto.DateTo)
+                    && res.StatusId != (int)ReservationStatuses.Closed
+                ).ToList();
+
+            if (reservationCheck.Any())
+            {
+                return BadRequest();
+            }
 
             if (reservationDto.CustomerId == 0)
             {
@@ -149,7 +224,8 @@ namespace HotelFlow.Controllers
                 DateFrom = createdReservation.DateFrom.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture),
                 DateTo = createdReservation.DateTo.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture),
                 Status = ((ReservationStatuses)createdReservation.StatusId).GetDescription(),
-                DateCreated = createdReservation.DateCreated.ToString("dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture)
+                DateCreated = createdReservation.DateCreated.ToString("dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture),
+                TotalPrice = createdReservation.TotalPrice
             };
 
             return Ok(createdReservationToSend); 
@@ -216,7 +292,8 @@ namespace HotelFlow.Controllers
                         DateFrom = reservation.DateFrom.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture),
                         DateTo = reservation.DateTo.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture),
                         Status = ((ReservationStatuses)reservation.StatusId).GetDescription(),
-                        DateCreated = reservation.DateCreated.ToString("dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture)
+                        DateCreated = reservation.DateCreated.ToString("dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture),
+                        TotalPrice = reservation.TotalPrice
                     }
                 );
             }

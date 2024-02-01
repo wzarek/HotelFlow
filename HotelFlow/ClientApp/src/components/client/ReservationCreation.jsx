@@ -46,19 +46,25 @@ const ReservationCreation = () => {
   } 
 
   const handleSubmit = async () => {
-    setLoading(true)
-    let reservationToSend = new ReservationToSend(room.id, dateFrom, dateTo, 0, 1, 0)
-
-    console.log(reservationToSend)
-
-    let JSONdata = await fetchPOSTJSONData(`${URL_BASE}/reservations/add`, JSON.stringify(reservationToSend))
-    let reservationData = ReservationToGet.fromJSON(JSON.stringify(JSONdata))
-
-    setLoading(false)
-    setSuccess(`Utworzono rezerwację nr ${reservationData.number}`)
-    setTimeout(() => {
-      navigate('/')
-    }, 2000)
+    try{
+      setLoading(true)
+      let reservationToSend = new ReservationToSend(room.id, dateFrom, dateTo, 0, 1, 0)
+  
+      console.log(reservationToSend)
+  
+      let JSONdata = await fetchPOSTJSONData(`${URL_BASE}/reservations/add`, JSON.stringify(reservationToSend))
+      let reservationData = ReservationToGet.fromJSON(JSON.stringify(JSONdata))
+  
+      setLoading(false)
+      setSuccess(`Utworzono rezerwację nr ${reservationData.number}`)
+      setTimeout(() => {
+        navigate('/')
+      }, 2000)
+    }catch(err){
+      console.error(err)
+      setError(err.message)
+      setLoading(false)
+    }
   }
 
   return (

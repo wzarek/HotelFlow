@@ -76,7 +76,12 @@ namespace HotelFlow.Services.DBServices
 
         public Room GetRoomById(int id)
         {
-            return _context.Rooms.FirstOrDefault(r => r.Id == id);
+            var room = _context.Rooms
+                .Include(r => r.Type)
+                .Include(r => r.Status)
+                .FirstOrDefault(r => r.Id == id);
+
+            return room;
         }
 
         public IEnumerable<Room> GetRoomsByFilter(Expression<Func<Room, bool>> filter)

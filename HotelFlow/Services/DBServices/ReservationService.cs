@@ -26,7 +26,8 @@ namespace HotelFlow.Services.DBServices
                 DateFrom = reservationDto.DateFrom,
                 DateTo = reservationDto.DateTo,
                 StatusId = reservationDto.StatusId,
-                DateCreated = DateTime.Now
+                DateCreated = DateTime.Now,
+                TotalPrice = reservationDto.TotalPrice
             };
             _context.Reservations.Add(reservation);
             _context.SaveChanges();

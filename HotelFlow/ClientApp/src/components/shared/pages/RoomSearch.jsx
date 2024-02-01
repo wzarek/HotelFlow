@@ -109,7 +109,7 @@ const RoomSearch = () => {
             : error ?
               <p className='text-red-700 font-medium'>{error}</p>
             : rooms && Array.isArray(rooms) && rooms.length > 0 ?
-              rooms.map((r) => <RoomCard onClick={() => handleGoToReservation(r.number)} key={r.number} name={`${r.number}: ${r.type}`} price={100} numPerson={r.numberOfPeople} />) 
+              rooms.map((r) => <RoomCard onClick={() => handleGoToReservation(r.number)} key={r.number} name={`${r.number}: ${r.type}`} price={r.price} numPerson={r.numberOfPeople} />) 
             :
               <p className='text-red-700 font-medium'>nie znaleziono pokojów spełniających warunki</p>
           }

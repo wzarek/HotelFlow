@@ -19,6 +19,7 @@ namespace HotelFlow.Models.DTO
         public string Status { get; set; }
         public bool IsActive { get; set; }
         public int NumberOfPeople { get; set; }
+        public int Price { get; set; }
     }
 
     public partial class Room
@@ -37,6 +38,7 @@ namespace HotelFlow.Models.DTO
         public int StatusId { get; set; }
         public bool IsActive { get; set; }
         public DateTime DateCreated { get; set; }
+        public int Price { get; set; }
 
         public virtual RoomStatus Status { get; set; } = null!;
         public virtual RoomType Type { get; set; } = null!;

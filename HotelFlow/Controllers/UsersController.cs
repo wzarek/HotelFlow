@@ -195,9 +195,19 @@ namespace HotelFlow.Controllers
 
             int userId = int.Parse(userIdString);
 
-            _userService.UpdateUser(userId, dataToChange, false);
+            var currentUser = _userService.UpdateUser(userId, dataToChange, false);
 
-            return Ok();
+            var currentUserToReturn = new UserDataDto
+            {
+                Name = currentUser.Name,
+                Surname = currentUser.Surname,
+                UserName = currentUser.UserName,
+                EmailAddress = currentUser.EmailAddress,
+                PhoneNumber = currentUser.PhoneNumber,
+                IsActive = currentUser.IsActive
+            };
+
+            return Ok(currentUserToReturn);
         }
     }
 }
