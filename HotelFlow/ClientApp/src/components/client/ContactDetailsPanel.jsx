@@ -37,7 +37,7 @@ const ContactDetailsPanel = () => {
         
         submitButton.disabled = true
     
-        let registerModel = new ContactDetailsToSend(username.value, email.value, phone.value, name.value, surname.value, true)
+        let registerModel = new ContactDetailsToSend(username.value, email.value, phone.value, name.value, surname.value, 0, true)
         try{
           let JSONdata = await fetchPOSTJSONData(`${URL_BASE}/users/editcurrentuser`, JSON.stringify(registerModel))
 
