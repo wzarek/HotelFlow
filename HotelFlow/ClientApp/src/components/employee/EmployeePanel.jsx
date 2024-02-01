@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Heading from '../shared/Heading'
 import PanelMenuItem from '../shared/PanelMenuItem'
 import ContactDetailsPanel from '../client/ContactDetailsPanel'
+import ReservationsManagementPanel from './ReservationsManagementPanel'
 
 const EmployeePanel = () => {
     const [roomsManagementActive, setRoomsManagementActive] = useState(false)
@@ -75,7 +76,7 @@ const EmployeePanel = () => {
                         : cleaningManagementActive ?
                             <div> </div>
                         : reservationsManagementActive ?
-                            <div> </div>
+                            <ReservationsManagementPanel />
                         : clientsManagementActive ?
                             <div> </div>
                         : myAccountManagementActive ?

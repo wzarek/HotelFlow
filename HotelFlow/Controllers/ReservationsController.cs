@@ -35,7 +35,32 @@ namespace HotelFlow.Controllers
         [Route("[action]")]
         public IActionResult All()
         {
-            return Ok(_reservationService.GetAllReservations());
+            var reservations = _reservationService.GetAllReservations();
+
+            var reservationsToReturn = new List<ReservationDataToSend>();
+
+            if (reservations == null || !reservations.Any())
+            {
+                return Ok(reservationsToReturn);
+            }
+
+            foreach (var reservation in reservations)
+            {
+                reservationsToReturn.Add(
+                    new ReservationDataToSend
+                    {
+                        Id = reservation.Id,
+                        ReservationNumber = $"{reservation.Id}{reservation.RoomId}",
+                        RoomId = reservation.RoomId,
+                        DateFrom = reservation.DateFrom.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture),
+                        DateTo = reservation.DateTo.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture),
+                        Status = ((ReservationStatuses)reservation.StatusId).GetDescription(),
+                        DateCreated = reservation.DateCreated.ToString("dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture),
+                        TotalPrice = reservation.TotalPrice
+                    }
+                );
+            }
+            return Ok(reservationsToReturn);
         }
 
         [HttpGet]
@@ -86,17 +111,23 @@ namespace HotelFlow.Controllers
             return Ok();
         }
 
+        public class ReservationEditStatus
+        {
+            public int reservationId { get; set; }
+            public int statusId { get; set; }
+        }
+
         [HttpPost]
         [Authorize(Roles = "Admin, Employee")]
         [Route("[action]")]
-        public IActionResult EditStatus(int reservationId, int statusId)
+        public IActionResult EditStatus(ReservationEditStatus status)
         {
-            if (reservationId < 1 || statusId < 1)
+            if (status.reservationId < 1 || status.statusId < 1)
             {
                 return BadRequest();
             }
 
-            var reservationData = _reservationService.EditStatus(reservationId, statusId);
+            var reservationData = _reservationService.EditStatus(status.reservationId, status.statusId);
 
             var reservationToSend = new ReservationDataToSend
             {
