@@ -9,6 +9,7 @@ import { authConstants } from "./services/auth/authorizationServices"
 import { Navigate } from "react-router-dom"
 import ClientPanel from "./components/client/ClientPanel"
 import EmployeePanel from "./components/employee/EmployeePanel"
+import ReservationCreation from "./components/client/ReservationCreation"
 
 const AppRoutes = [
   {
@@ -46,6 +47,12 @@ const AppRoutes = [
     path: '/client/panel',
     role: authConstants.client,
     element: <ClientPanel />
+  },
+  {
+    index: 11,
+    path: '/client/create-reservation',
+    role: authConstants.client,
+    element: <ReservationCreation />
   },
   {
     index: 30,

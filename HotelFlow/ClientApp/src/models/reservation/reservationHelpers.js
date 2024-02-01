@@ -27,4 +27,22 @@ export class ReservationToGet {
         });
         return reservationsArray
     }
+
+    static fromJSON(json) {
+        let parsedJSON = JSON.parse(json)
+
+        return new ReservationToGet(parsedJSON.id, parsedJSON.reservationNumber, parsedJSON.roomId, parsedJSON.dateFrom, parsedJSON.dateTo, parsedJSON.status, parsedJSON.dateCreated)
+    }
+}
+
+export class ReservationToSend
+{
+    constructor(roomId, dateFrom, dateTo, statusId, employeeId, customerId) {
+        this.RoomId = roomId
+        this.DateFrom = dateFrom
+        this.DateTo = dateTo
+        this.StatusId = statusId
+        this.EmployeeId = employeeId
+        this.CustomerId = customerId
+    }
 }

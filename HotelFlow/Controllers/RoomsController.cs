@@ -175,6 +175,36 @@ namespace HotelFlow.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,Employee,User")]
+        [Route("[action]/{number}")]
+        public IActionResult GetRoomByNumber(int number)
+        {
+            if (number < 1)
+            {
+                return BadRequest();
+            }
+
+            var room = _roomService.GetRoomsByFilter(r => r.Number == number).FirstOrDefault();
+
+            if (room == null)
+            {
+                return BadRequest();
+            }
+
+            var roomToSend = new RoomDataToSend
+            {
+                Id = room.Id,
+                Number = room.Number,
+                Type = room.Type.Name,
+                Status = room.Status.Name,
+                NumberOfPeople = room.Type.NumberOfPeople,
+                IsActive = room.IsActive
+            };
+
+            return Ok(roomToSend);
+        }
+
+        [HttpGet]
         [Authorize(Roles = "Admin,Employee")]
         [Route("[action]/{statusid}")]
         public IActionResult GetByStatus(int statusId, bool getInactive = false)
