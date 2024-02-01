@@ -1,9 +1,11 @@
-﻿using HotelFlow.Models;
+﻿using HotelFlow.Helpers;
+using HotelFlow.Models;
 using HotelFlow.Models.DTO;
 using HotelFlow.Services;
 using HotelFlow.Services.DBServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 using System.Security.Claims;
 using static HotelFlow.Helpers.Constants;
 
@@ -68,7 +70,7 @@ namespace HotelFlow.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("[action]")]
-        public IActionResult Edit(int id, ReservationDataDto reservationDto)
+        public IActionResult Edit(int id, ReservationDto reservationDto)
         {
             if (id < 1 || reservationDto == null)
             {
@@ -98,7 +100,7 @@ namespace HotelFlow.Controllers
         [HttpPost]
         [Authorize(Roles = "User,Employee,Admin")]
         [Route("[action]")]
-        public IActionResult Add(ReservationDataDto reservationDto)
+        public IActionResult Add(ReservationDto reservationDto)
         {
             if (reservationDto == null)
             {
@@ -149,14 +151,32 @@ namespace HotelFlow.Controllers
 
             int userId = int.Parse(userIdString);
 
-            var reviews = _reservationService.GetReservationsByFilter(r => r.CustomerId == userId).ToList();
+            var reservations = _reservationService.GetReservationsByFilter(r => r.CustomerId == userId).ToList();
 
-            if (reviews == null || !reviews.Any())
+            var reservationsToReturn = new List<ReservationDataToSend>();
+
+            if (reservations == null || !reservations.Any())
             {
-                return Ok(new List<Review>());
+                return Ok(reservationsToReturn);
             }
 
-            return Ok(reviews);
+            foreach ( var reservation in reservations)
+            {
+                reservationsToReturn.Add(
+                    new ReservationDataToSend
+                    {
+                        Id = reservation.Id,
+                        ReservationNumber = $"{reservation.Id}{reservation.RoomId}",
+                        RoomId = reservation.RoomId,
+                        DateFrom = reservation.DateFrom.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture),
+                        DateTo = reservation.DateTo.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture),
+                        Status = ((ReservationStatuses)reservation.StatusId).GetDescription(),
+                        DateCreated = reservation.DateCreated.ToString("dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture)
+                    }
+                );
+            }
+
+            return Ok(reservationsToReturn);
         }
     }
 }

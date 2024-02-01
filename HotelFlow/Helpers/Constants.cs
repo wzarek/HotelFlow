@@ -21,19 +21,19 @@ namespace HotelFlow.Helpers
 
         public enum ReservationStatuses
         {
-            [Description("To Confirm")]
+            [Description("do zatwierdzenia")]
             ToConfirm = 1,
 
-            [Description("Confirmed")]
+            [Description("zatwierdzona")]
             Confirmed = 2,
 
-            [Description("Checked In")]
+            [Description("zameldowano")]
             CheckedIn = 3,
 
-            [Description("Checked Out")]
+            [Description("wymeldowano")]
             CheckedOut = 4,
 
-            [Description("Closed")]
+            [Description("zamknięta")]
             Closed = 5
         }
 

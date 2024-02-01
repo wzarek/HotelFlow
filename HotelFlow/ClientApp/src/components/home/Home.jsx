@@ -1,5 +1,5 @@
 import React from 'react'
-import SearchForm from '../shared/forms/SearchForm'
+import SearchForm from '../shared/forms/HomeSearchForm'
 import {ReactComponent as HomeHotelSvg} from '../../imgs/HomeHotel.svg'
 import {ReactComponent as TimeSvg} from '../../imgs/TimeTicking.svg'
 import {ReactComponent as GoDown} from '../../imgs/GoDown.svg'

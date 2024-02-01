@@ -168,7 +168,36 @@ namespace HotelFlow.Controllers
                 return BadRequest();
             }
 
-            return Ok(currentUser);
+            var currentUserToReturn = new UserDataDto
+            {
+                Name = currentUser.Name,
+                Surname = currentUser.Surname,
+                UserName = currentUser.UserName,
+                EmailAddress = currentUser.EmailAddress,
+                PhoneNumber = currentUser.PhoneNumber,
+                IsActive = currentUser.IsActive
+            };
+
+            return Ok(currentUserToReturn);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "User,Employee,Admin")]
+        [Route("[action]")]
+        public IActionResult EditCurrentUser(UserDataDto dataToChange)
+        {
+            string userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+
+            if (userIdString == string.Empty)
+            {
+                return BadRequest();
+            }
+
+            int userId = int.Parse(userIdString);
+
+            _userService.UpdateUser(userId, dataToChange, false);
+
+            return Ok();
         }
     }
 }

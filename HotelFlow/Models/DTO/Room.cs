@@ -10,6 +10,17 @@ namespace HotelFlow.Models.DTO
         public int StatusId { get; set; }
         public bool IsActive { get; set; }
     }
+
+    public class RoomDataToSend
+    {
+        public int Id { get; set; }
+        public int Number { get; set; }
+        public string Type { get; set; }
+        public string Status { get; set; }
+        public bool IsActive { get; set; }
+        public int NumberOfPeople { get; set; }
+    }
+
     public partial class Room
     {
         public Room()
