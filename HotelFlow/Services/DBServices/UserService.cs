@@ -73,6 +73,7 @@ namespace HotelFlow.Services.DBServices
             user.Surname = userDto.Surname;
             user.IsActive = userDto.IsActive;
             user.PhoneNumber = userDto.PhoneNumber;
+            user.RoleId = userDto.RoleId;
 
             _context.SaveChanges();
 

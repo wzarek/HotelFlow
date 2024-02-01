@@ -9,6 +9,14 @@ namespace HotelFlow.Models.DTO
         public int EmployeeId { get; set; }
         public DateTime DateToBeCleaned { get; set; }
     }
+    public class CleaningScheduleFromFrontEnd
+    {
+        public int RoomId { get; set; }
+        public int EmployeeId { get; set; }
+        public string DateToBeCleaned { get; set; }
+    }
+
+
     public partial class CleaningSchedule
     {
         public int Id { get; set; }

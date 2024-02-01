@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import Heading from '../shared/Heading'
 import PanelMenuItem from '../shared/PanelMenuItem'
+import FloorGrid from './FloorGrid'
+import EmployeeManagment from './EmployeeManagment'
+import CleaningManagment from './CleaningManagment'
 
 const AdminPanel = () => {
     const [roomsManagementActive, setRoomsManagementActive] = useState(false)
@@ -70,15 +73,15 @@ const AdminPanel = () => {
                 <div className='w-[90%] min-h-[70vh] mx-auto shadow p-[2rem] rounded-2xl'>
                     {
                         roomsManagementActive ? 
-                            <div> </div>
+                            <FloorGrid/>
                         : cleaningManagementActive ?
-                            <div> </div>
+                            <CleaningManagment/>
                         : reservationsManagementActive ?
                             <div> </div>
                         : clientsManagementActive ?
                             <div> </div>
                         : employeesManagementActive ?
-                            <div> </div>
+                            <EmployeeManagment/>
                         : <div>Wybierz jedną z opcji</div>
                     }
                 </div>

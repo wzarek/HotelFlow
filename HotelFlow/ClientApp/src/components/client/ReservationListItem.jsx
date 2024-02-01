@@ -30,7 +30,6 @@ const ReservationListItem = ({dateFrom, dateTo, number, status, onClick}) => {
             statusClass = 'border-grey-200'
             statusTxtClass = 'text-grey-600'
     }
-
     let classes = `flex justify-between items-center border-2 rounded-xl p-[.75rem] cursor-pointer ${statusClass} hover:bg-blue-100`
     let statusTextClasases = `font-medium ${statusTxtClass}`
 

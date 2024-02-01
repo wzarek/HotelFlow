@@ -4,6 +4,7 @@ using HotelFlow.Services;
 using HotelFlow.Services.DBServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 using static HotelFlow.Helpers.Constants;
 
 namespace HotelFlow.Controllers
@@ -45,13 +46,19 @@ namespace HotelFlow.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin,Employee")]
         [Route("[action]")]
-        public IActionResult Add(CleaningScheduleDto scheduleDto)
+        public IActionResult Add(CleaningScheduleFromFrontEnd scheduleFD)
         {
-            if (scheduleDto == null)
+            if (scheduleFD == null)
             {
                 return BadRequest();
             }
 
+            var scheduleDto = new CleaningScheduleDto
+            {
+                RoomId = scheduleFD.RoomId,
+                EmployeeId = scheduleFD.EmployeeId,
+                DateToBeCleaned = DateTime.ParseExact(scheduleFD.DateToBeCleaned, "yyyy-MM-dd", CultureInfo.InvariantCulture),
+            };
             return Ok(_cleaningScheduleService.CreateCleaningSchedule(scheduleDto));
         }
 
