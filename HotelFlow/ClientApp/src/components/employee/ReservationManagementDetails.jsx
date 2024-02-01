@@ -225,56 +225,33 @@ const handleClose = async () => {
                     
                 </div>
                 <div className='flex w-full justify-between items-center absolute bottom-0 right-0'>
+                  <div>
+                    {
+                        error &&
+                        <p className='text-red-700 mt-[2rem] font-medium'>{error}</p>
+                    }
+                  
                     {       
                         cancelable &&
-                            <div>
                                 <button onClick={handleCancel} className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center disabled:bg-gray-300">anuluj</button>
-                                {
-                                    error &&
-                                    <p className='text-red-700 mt-[2rem] font-medium'>{error}</p>
-                                }
-                            </div>
                       }
                       {       
                         confirmable &&
-                            <div>
                                 <button onClick={handleConfirm} className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center disabled:bg-gray-300">potwierdź</button>
-                                {
-                                    error &&
-                                    <p className='text-red-700 mt-[2rem] font-medium'>{error}</p>
-                                }
-                            </div>
                       }
                       {       
                         checkinable &&
-                            <div>
-                                <button onClick={handleCheckin} className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center disabled:bg-gray-300">check in</button>
-                                {
-                                    error &&
-                                    <p className='text-red-700 mt-[2rem] font-medium'>{error}</p>
-                                }
-                            </div>
+                              <button onClick={handleCheckin} className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center disabled:bg-gray-300">check in</button>
                       }
                       {       
                         checkoutable &&
-                            <div>
-                                <button onClick={handleCheckout} className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center disabled:bg-gray-300">check out</button>
-                                {
-                                    error &&
-                                    <p className='text-red-700 mt-[2rem] font-medium'>{error}</p>
-                                }
-                            </div>
+                            <button onClick={handleCheckout} className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center disabled:bg-gray-300">check out</button>
                       }
                       {       
                         closable &&
-                            <div>
-                                <button onClick={handleClose} className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center disabled:bg-gray-300">zamknij</button>
-                                {
-                                    error &&
-                                    <p className='text-red-700 mt-[2rem] font-medium'>{error}</p>
-                                }
-                            </div>
+                            <button onClick={handleClose} className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center disabled:bg-gray-300">zamknij</button>
                       }
+                      </div>
                       {
                           review &&
                             <form>

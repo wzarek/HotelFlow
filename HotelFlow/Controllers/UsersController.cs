@@ -195,6 +195,10 @@ namespace HotelFlow.Controllers
 
             int userId = int.Parse(userIdString);
 
+            var usr = _userService.GetUserById(userId);
+
+            dataToChange.RoleId = usr.RoleId;
+
             var currentUser = _userService.UpdateUser(userId, dataToChange, false);
 
             var currentUserToReturn = new UserDataDto
@@ -204,7 +208,8 @@ namespace HotelFlow.Controllers
                 UserName = currentUser.UserName,
                 EmailAddress = currentUser.EmailAddress,
                 PhoneNumber = currentUser.PhoneNumber,
-                IsActive = currentUser.IsActive
+                IsActive = currentUser.IsActive,
+                RoleId = currentUser.RoleId
             };
 
             return Ok(currentUserToReturn);
