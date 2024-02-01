@@ -40,7 +40,7 @@ const context =  [
   "/api/rooms/random",
   "/api/rooms/allwithinactive",
   "/api/rooms/getwithoffset",
-  "/api/rooms/getroombyid",
+  "/api/rooms/getroombynumber",
   "/api/rooms/getbystatus",
   "/api/rooms/getbytypes",
   "/api/rooms/edit",

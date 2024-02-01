@@ -13,6 +13,16 @@ namespace HotelFlow.Models.DTO
         public int StatusId { get; set; }
     }
 
+    public class ReservationFromFrontend
+    {
+        public int RoomId { get; set; }
+        public int CustomerId { get; set; }
+        public int EmployeeId { get; set; }
+        public string DateFrom { get; set; }
+        public string DateTo { get; set; }
+        public int StatusId { get; set; }
+    }
+
     public class ReservationDataToSend
     {
         public int Id { get; set; }

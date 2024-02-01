@@ -19,4 +19,10 @@ export class RoomToGet {
         });
         return roomsArray
     }
+
+    static fromJSON(json) {
+        let parsedJSON = JSON.parse(json)
+
+        return new RoomToGet(parsedJSON.id, parsedJSON.number, parsedJSON.type, parsedJSON.status, parsedJSON.isActive, parsedJSON.numberOfPeople)
+    }
 }
