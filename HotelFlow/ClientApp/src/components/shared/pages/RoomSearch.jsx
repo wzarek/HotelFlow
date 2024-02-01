@@ -14,11 +14,13 @@ const RoomSearch = () => {
   const [defaultNumPeople, setDefaultNumPeople] = useState(null)
   const [rooms, setRooms] = useState([])
   const [error, setError] = useState('')
-  const [loading, setLoading] = useState('')
+  const [filterError, setFilterError] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const fetchData = async (data) => {
     try{
         setLoading(true)
+        setFilterError('')
 
         let JSONdata = await fetchPOSTJSONData(`${URL_BASE}/rooms/allfiltered`, JSON.stringify(data))
         let roomsData = RoomToGet.fromJSONList(JSON.stringify(JSONdata))
@@ -37,7 +39,11 @@ const RoomSearch = () => {
     setDefaultDateTo(searchParams.get('dateTo') ?? null)
     setDefaultNumPeople(searchParams.get('numPeople') ?? null)
 
-    fetchData({dateFrom: searchParams.get('dateFrom') ?? null, dateTo: searchParams.get('dateTo') ?? null, numberOfPeople: searchParams.get('numPeople') ?? 0})
+    let dateFromF = searchParams.get('dateFrom') ? searchParams.get('dateFrom') : null
+    let dateToF = searchParams.get('dateTo') ? searchParams.get('dateTo') : null
+    let numPeopleF = searchParams.get('numPeople') ? searchParams.get('numPeople') : 0
+
+    fetchData({dateFrom: dateFromF, dateTo: dateToF, numberOfPeople: numPeopleF})
   }, [])
 
   const handleSearchSubmit = (e) => {
@@ -51,7 +57,24 @@ const RoomSearch = () => {
       search: `?${params}`,
     })
 
-    fetchData({dateFrom: dateFrom.value, dateTo: dateTo.value, numberOfPeople: numPeople.value})
+    let dateFromF = dateFrom.value ? dateFrom.value : null
+    let dateToF = dateTo.value ? dateTo.value : null
+    let numPeopleF = numPeople.value ? numPeople.value : 0
+
+    fetchData({dateFrom: dateFromF, dateTo: dateToF, numberOfPeople: numPeopleF})
+  }
+
+  const handleGoToReservation = (number) => {
+    if (!defaultDateFrom || !defaultDateTo || !defaultNumPeople){
+      setFilterError('Wypełnij filtry, aby przejść do rezerwacji pokoju!')
+      return
+    }
+    let params = createSearchParams({dateFrom: defaultDateFrom, dateTo: defaultDateTo, roomNumber: number})
+
+    navigate({
+      pathname: '/client/create-reservation',
+      search: `?${params}`,
+    })
   }
 
   return (
@@ -72,6 +95,10 @@ const RoomSearch = () => {
             <label htmlFor='numPeople'>ilość osób</label>
             <input defaultValue={defaultNumPeople} className='w-[8em] bg-white p-[.5rem] rounded-lg text-black border-blue-600 border-solid border-[1.5px]' type='number' min={1} max={6} id='numPeople' name='numPeople' />
           </div>
+            {
+                filterError &&
+                <p className='text-red-700 font-medium'>{filterError}</p>
+            }
             <SubmitInputSecondary classes='mt-auto' name='submit' text='filtruj' />
           </form>
         </aside>
@@ -82,7 +109,7 @@ const RoomSearch = () => {
             : error ?
               <p className='text-red-700 font-medium'>{error}</p>
             : rooms && Array.isArray(rooms) && rooms.length > 0 ?
-              rooms.map((r) => <RoomCard key={r.number} name={`${r.number}: ${r.type}`} price={100} numPerson={r.numberOfPeople} />) 
+              rooms.map((r) => <RoomCard onClick={() => handleGoToReservation(r.number)} key={r.number} name={`${r.number}: ${r.type}`} price={100} numPerson={r.numberOfPeople} />) 
             :
               <p className='text-red-700 font-medium'>nie znaleziono pokojów spełniających warunki</p>
           }

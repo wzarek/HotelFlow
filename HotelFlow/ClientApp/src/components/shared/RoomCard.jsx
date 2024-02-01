@@ -6,7 +6,7 @@ import RoomTriple from '../../imgs/tmp/RoomTriple.jpg'
 import RoomQuadruple from '../../imgs/tmp/RoomQuadruple.jpg'
 import RoomSix from '../../imgs/tmp/RoomSix.jpg'
 
-const RoomCard = ({dateFrom, dateTo, name, price, numPerson, vertical, border}) => {
+const RoomCard = ({dateFrom, dateTo, name, price, numPerson, vertical, border, onClick}) => {
 
   let img
 
@@ -33,7 +33,7 @@ const RoomCard = ({dateFrom, dateTo, name, price, numPerson, vertical, border}) 
 
   return (
     vertical ?
-    <div className={containerClasses}>
+    <div onClick={onClick} className={containerClasses}>
         <div className='bg-black w-full aspect-square rounded-lg overflow-hidden max-h-[30vh]'>
           <img className='aspect-square w-full object-cover duration-100 group-hover:scale-110 ' src={img} alt={name} />
         </div>
@@ -49,7 +49,7 @@ const RoomCard = ({dateFrom, dateTo, name, price, numPerson, vertical, border}) 
         </div>
     </div>
     :
-    <div className='group cursor-pointer relative p-[3rem] pb-[2rem] bg-white shadow-lg w-full rounded-2xl duration-100'>
+    <div onClick={onClick} className='group cursor-pointer relative p-[3rem] pb-[2rem] bg-white shadow-lg w-full rounded-2xl duration-100'>
         <div className='bg-black w-full aspect-square rounded-lg overflow-hidden'>
           <img className='aspect-square w-full object-cover duration-100 group-hover:scale-110' src={img} alt={name} />
         </div>

@@ -18,12 +18,14 @@ namespace HotelFlow.Controllers
         private ReservationService _reservationService { get; set; }
         private ReservationStatusService _reservationStatusService { get; set; }
         private ReviewService _reviewService { get; set; }
+        private UserService _userService { get; set; }
 
-        public ReservationsController(ReservationService reservationService, ReservationStatusService reservationStatusService, ReviewService reviewService)
+        public ReservationsController(ReservationService reservationService, ReservationStatusService reservationStatusService, ReviewService reviewService, UserService userService)
         {
             _reservationService = reservationService;
             _reservationStatusService = reservationStatusService;
             _reviewService = reviewService;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -100,14 +102,57 @@ namespace HotelFlow.Controllers
         [HttpPost]
         [Authorize(Roles = "User,Employee,Admin")]
         [Route("[action]")]
-        public IActionResult Add(ReservationDto reservationDto)
+        public IActionResult Add(ReservationFromFrontend reservationFromFrontend)
         {
-            if (reservationDto == null)
+            if (reservationFromFrontend == null)
             {
                 return BadRequest();
             }
 
-            return Ok(_reservationService.CreateReservation(reservationDto)); 
+            string userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+
+            if (userIdString == string.Empty)
+            {
+                return BadRequest();
+            }
+
+            int userId = int.Parse(userIdString);
+
+            var reservationDto = new ReservationDto
+            {
+                CustomerId = reservationFromFrontend.CustomerId,
+                EmployeeId = reservationFromFrontend.EmployeeId,
+                StatusId = reservationFromFrontend.StatusId,
+                RoomId = reservationFromFrontend.RoomId,
+                DateFrom = DateTime.ParseExact(reservationFromFrontend.DateFrom, "yyyy-MM-dd", CultureInfo.InvariantCulture),
+                DateTo = DateTime.ParseExact(reservationFromFrontend.DateTo, "yyyy-MM-dd", CultureInfo.InvariantCulture)
+            };
+
+            if (reservationDto.CustomerId == 0)
+            {
+                reservationDto.CustomerId = userId;
+                reservationDto.EmployeeId = _userService.GetUsersByFilter(u => u.RoleId == (int)Roles.Admin).First().Id;
+            } else if (reservationDto.EmployeeId == 0)
+            {
+                reservationDto.EmployeeId = userId;
+            }
+
+            reservationDto.StatusId = (int)ReservationStatuses.ToConfirm;
+
+            var createdReservation = _reservationService.CreateReservation(reservationDto);
+
+            var createdReservationToSend = new ReservationDataToSend
+            {
+                Id = createdReservation.Id,
+                ReservationNumber = $"{createdReservation.Id}{createdReservation.RoomId}",
+                RoomId = createdReservation.RoomId,
+                DateFrom = createdReservation.DateFrom.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture),
+                DateTo = createdReservation.DateTo.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture),
+                Status = ((ReservationStatuses)createdReservation.StatusId).GetDescription(),
+                DateCreated = createdReservation.DateCreated.ToString("dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture)
+            };
+
+            return Ok(createdReservationToSend); 
         }
 
         [HttpGet]
