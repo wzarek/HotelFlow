@@ -19,7 +19,7 @@ const EmployeeManagment = () => {
     const fetchData = async () => {
         try {
             let JSONdata = await fetchGETJSONData(`${URL_BASE}/users/all`)
-            let usersData = ContactDetailsToGet.fromJSONList(JSON.stringify(JSONdata.users))
+            let usersData = ContactDetailsToGet.fromJSONList(JSON.stringify(JSONdata))
 
             setUsers(usersData)
           } catch(err){
